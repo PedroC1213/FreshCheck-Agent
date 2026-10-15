@@ -2,9 +2,9 @@
   "fuente": "simulador",
   "n_entrenamiento": 4500,
   "n_validacion": 900,
-  "exactitud_validacion": 0.98,
+  "exactitud_validacion": 0.9788888888888889,
   "belt_l_nominal": 72.0,
   "seed_entrenamiento": 1000,
   "seed_validacion": 2000,
-  "segundos": 86.5
+  "segundos": 367.9
 }
