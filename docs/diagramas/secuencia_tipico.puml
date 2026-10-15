@@ -1,0 +1,36 @@
+@startuml
+title FreshCheck-Agent - escenario tipico
+actor Operador
+participant "Interfaz (CLI/Streamlit)" as I
+participant "Entorno (linea simulada)" as E
+participant "Agente: Percepcion" as P
+participant "Agente: Decision" as D
+participant "Agente: Accion" as A
+participant "Desviador (actuador)" as V
+database "Registro y reportes" as R
+Operador -> I : iniciar_simulacion(escenario, n, seed)
+I -> E : flujo(n)
+loop por cada unidad
+  E -> P : Percepto(imagen, t_s, lote, velocidad)
+  P -> P : validar, normalizar, segmentar, caracteristicas
+  P -> P : ModeloDelMundo.actualizar()
+  P -> D : Percepcion(OK, caracteristicas)
+  D -> D : predecir_proba(x)
+  alt clase == danada
+    D -> A : Decision(DESVIAR)
+    A -> V : accionar(unit_id, t_act, latencia, plazo)
+    alt latencia <= plazo y desviador libre
+      V --> A : ejecutado=True (descarte)
+    else DECISION_TARDIA o DESVIADOR_OCUPADO
+      V --> A : ejecutado=False (empaque_final)
+    end
+  else fresca o maduracion
+    D -> A : Decision(CONTINUAR)
+  end
+  A -> R : registrar(percepcion, decision, accion)
+  A --> E : efecto(destino)
+end
+I -> R : reporte_por_proveedor()
+R --> I : tabla
+I --> Operador : decisiones, metricas, reporte
+@enduml

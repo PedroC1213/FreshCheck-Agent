@@ -1,0 +1,35 @@
+@startuml
+title FreshCheck-Agent - excepcion: sensor sin dato y camara en falla
+actor Operador
+participant "Interfaz" as I
+participant "Entorno" as E
+participant "Agente: Percepcion" as P
+participant "Agente: Decision" as D
+participant "Agente: Accion" as A
+database "Registro" as R
+Operador -> I : iniciar_simulacion('F10_rafaga')
+I -> E : flujo(n)
+loop unidades 10 a 16
+  E -> P : Percepto(imagen=None)
+  P -> P : validar_imagen() -> SENSOR_SIN_DATO
+  P -> P : invalidos_consecutivos += 1
+  alt invalidos_consecutivos >= 3
+    P -> P : estado_camara = EN_FALLA
+  else menos de 3
+    P -> P : estado_camara = DEGRADADA
+  end
+  P -> D : Percepcion(SENSOR_SIN_DATO)
+  alt codigo != OK o camara EN_FALLA
+    D -> A : Decision(REVISION_MANUAL, motivo)
+    A --> E : derivar a inspeccion manual
+  end
+  A -> R : registrar(motivo, estado_camara)
+  alt estado_camara == EN_FALLA
+    A --> I : alerta CAMARA_EN_FALLA
+    I --> Operador : mostrar alerta
+  end
+  alt 2 percepciones validas seguidas
+    P -> P : estado_camara = OK
+  end
+end
+@enduml

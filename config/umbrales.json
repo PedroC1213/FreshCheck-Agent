@@ -1,0 +1,16 @@
+{
+  "_nota": "Umbrales fijados ANTES de ejecutar las pruebas oficiales (semillas 9000+). No modificar después de correr scripts/run_tests.py.",
+  "fijado_el": "2026-10-14",
+  "unidades_por_corrida": 200,
+  "repeticiones": 5,
+  "semilla_base_pruebas": 9000,
+  "M1_exactitud_nominal": {"formula": "correctas / unidades con fruta única, sin falla inyectada (REVISION_MANUAL y NINGUNA cuentan como error)", "umbral": 0.95, "sentido": ">=", "escenarios": "N1-N8"},
+  "M1_exactitud_limite":  {"formula": "igual que M1 nominal", "umbral": 0.85, "sentido": ">=", "escenarios": "L1-L5"},
+  "M2_reduccion_defectuosas": {"formula": "(D0 - D1) / D0; D0 = dañadas que llegarían al empaque sin agente; D1 = dañadas que llegan con agente", "umbral": 0.30, "sentido": ">=", "escenarios": "N1-N8 y L1-L5"},
+  "M3_descarte_indebido_nominal": {"formula": "unidades no dañadas desviadas al descarte / unidades no dañadas", "umbral": 0.05, "sentido": "<=", "escenarios": "N1-N8"},
+  "M3_descarte_indebido_limite":  {"formula": "igual que M3 nominal", "umbral": 0.10, "sentido": "<=", "escenarios": "L1-L5"},
+  "M4_latencia_p95_ms": {"formula": "percentil 95 de la latencia percepción+decisión (ms)", "umbral": 200.0, "sentido": "<=", "escenarios": "N1-N8 y L1-L5"},
+  "M4_decisiones_tardias": {"formula": "decisiones con latencia > plazo (distancia / velocidad * 0,8)", "umbral": 0, "sentido": "<=", "escenarios": "N1-N8 y L1-L5"},
+  "M5_robustez_fallas": {"formula": "inyecciones manejadas con la acción y código esperados, sin excepción y con registro / inyecciones totales", "umbral": 1.0, "sentido": ">=", "escenarios": "F01-F11"},
+  "M6_consistencia_reporte": {"formula": "celdas (lote x métrica) iguales entre el reporte del agente y el recalculado desde el log / celdas totales", "umbral": 1.0, "sentido": ">=", "escenarios": "N1-N8 y L1-L5"}
+}

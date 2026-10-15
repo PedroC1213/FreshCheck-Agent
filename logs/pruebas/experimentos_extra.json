@@ -1,0 +1,71 @@
+{
+  "E1_ablacion": {
+    "exactitud": {
+      "N1_nominal": {
+        "con_modelo_del_mundo": {
+          "media": 0.9940000000000001,
+          "sd": 0.008944271909999168
+        },
+        "sin_modelo_del_mundo": {
+          "media": 0.99,
+          "sd": 0.007071067811865481
+        }
+      },
+      "N2_luz_baja": {
+        "con_modelo_del_mundo": {
+          "media": 0.9940000000000001,
+          "sd": 0.008944271909999168
+        },
+        "sin_modelo_del_mundo": {
+          "media": 0.9960000000000001,
+          "sd": 0.005477225575051666
+        }
+      },
+      "L1_luz_muy_baja": {
+        "con_modelo_del_mundo": {
+          "media": 0.982,
+          "sd": 0.013038404810405309
+        },
+        "sin_modelo_del_mundo": {
+          "media": 0.984,
+          "sd": 0.01140175425099139
+        }
+      },
+      "L2_sobreexposicion": {
+        "con_modelo_del_mundo": {
+          "media": 0.9560000000000001,
+          "sd": 0.008944271909999166
+        },
+        "sin_modelo_del_mundo": {
+          "media": 0.958,
+          "sd": 0.013038404810405309
+        }
+      }
+    },
+    "rafaga_de_fallas": {
+      "con_modelo_del_mundo": {
+        "revision_manual_unidades_10_a_16": 6,
+        "estado_camara_unidad_13": "EN_FALLA"
+      },
+      "sin_modelo_del_mundo": {
+        "revision_manual_unidades_10_a_16": 5,
+        "estado_camara_unidad_13": "OK"
+      }
+    }
+  },
+  "E2_reentrenamiento": {
+    "muestras_de_retroalimentacion": 120,
+    "exactitud_pera_antes": {
+      "media": 0.46799999999999997,
+      "sd": 0.04207136793592527
+    },
+    "exactitud_pera_despues": {
+      "media": 0.962,
+      "sd": 0.02588435821108956
+    },
+    "exactitud_nominal_tras_reentrenar": {
+      "media": 0.9960000000000001,
+      "sd": 0.005477225575051666
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "S_A": 3.95,
+  "S_B": 3.85,
+  "elegido": "A (FreshCheck-Agent)",
+  "criterio_mas_influyente": "Complejidad de IA",
+  "peso_base": 0.15,
+  "peso_equilibrio": 0.191,
+  "sensibilidad_mas_influyente": [
+    {
+      "criterio": "Complejidad de IA",
+      "cambio_peso": "-10%",
+      "peso_nuevo": 0.05,
+      "S_A": 4.0618,
+      "S_B": 3.7147,
+      "elegido": "A"
+    },
+    {
+      "criterio": "Complejidad de IA",
+      "cambio_peso": "+10%",
+      "peso_nuevo": 0.25,
+      "S_A": 3.8382,
+      "S_B": 3.9853,
+      "elegido": "B"
+    }
+  ]
+}

@@ -1,0 +1,530 @@
+{
+  "configuracion": {
+    "unidades_por_corrida": 200,
+    "repeticiones": 5,
+    "semilla_base": 9000,
+    "segundos": 312.1
+  },
+  "medidas": {
+    "M1_exactitud_nominal": {
+      "media": 0.98775,
+      "sd_entre_corridas": 0.006299165593909026,
+      "peor_escenario": "N5_posicion",
+      "valor_peor_escenario": 0.9800000000000001,
+      "n_escenarios": 8,
+      "n_corridas": 40,
+      "cumple": true
+    },
+    "M1_exactitud_limite": {
+      "media": 0.961,
+      "sd_entre_corridas": 0.02397915761656358,
+      "peor_escenario": "L4_frontera",
+      "valor_peor_escenario": 0.929,
+      "n_escenarios": 5,
+      "n_corridas": 25,
+      "cumple": true
+    },
+    "M3_descarte_indebido_nominal": {
+      "media": 0.0007792099781665805,
+      "sd_entre_corridas": 0.0020892455978364873,
+      "peor_escenario": "N5_posicion",
+      "valor_peor_escenario": 0.0038167393361029983,
+      "n_escenarios": 8,
+      "n_corridas": 40,
+      "cumple": true
+    },
+    "M3_descarte_indebido_limite": {
+      "media": 0.006084885367125989,
+      "sd_entre_corridas": 0.0090141836027027,
+      "peor_escenario": "L3_desenfoque",
+      "valor_peor_escenario": 0.018301904647967583,
+      "n_escenarios": 5,
+      "n_corridas": 25,
+      "cumple": true
+    },
+    "M2_reduccion_defectuosas": {
+      "media": 0.9871143376181102,
+      "sd_entre_corridas": 0.03144860731137405,
+      "peor_escenario": "L5_alta_densidad",
+      "valor_peor_escenario": 0.910123929426255,
+      "n_escenarios": 13,
+      "n_corridas": 65,
+      "cumple": true,
+      "tasa_defecto_sin_agente_media": 0.21092307692307694,
+      "tasa_defecto_con_agente_media": 0.002881945413224065
+    },
+    "M4_latencia_p95_ms": {
+      "media": 14.846399999999994,
+      "maximo_observado": 108.161,
+      "sd_entre_corridas": 2.6609843158903916,
+      "cumple": true
+    },
+    "M4_decisiones_tardias": {
+      "total": 0,
+      "cumple": true
+    },
+    "M5_robustez_fallas": {
+      "media": 0.9899497487437185,
+      "instancias": 199,
+      "manejadas": 197,
+      "n_escenarios": 11,
+      "cumple": false
+    },
+    "M6_consistencia_reporte": {
+      "media": 1.0,
+      "sd_entre_corridas": 0.0,
+      "n_corridas": 65,
+      "cumple": true
+    }
+  },
+  "por_escenario": {
+    "N1_nominal": {
+      "M1_exactitud": {
+        "media": 0.986,
+        "sd": 0.0022360679774997916,
+        "minimo": 0.985,
+        "maximo": 0.99
+      },
+      "M2_reduccion": {
+        "media": 1.0,
+        "sd": 0.0,
+        "minimo": 1.0,
+        "maximo": 1.0
+      },
+      "M3_descarte_indebido": {
+        "media": 0.0,
+        "sd": 0.0,
+        "minimo": 0.0,
+        "maximo": 0.0
+      },
+      "M4_latencia_p95_ms": {
+        "media": 14.032449999999997,
+        "sd": 0.6256117925678831,
+        "minimo": 13.70995,
+        "maximo": 15.150449999999998
+      }
+    },
+    "N2_luz_baja": {
+      "M1_exactitud": {
+        "media": 0.99,
+        "sd": 0.0,
+        "minimo": 0.99,
+        "maximo": 0.99
+      },
+      "M2_reduccion": {
+        "media": 0.9955555555555555,
+        "sd": 0.00993807989999908,
+        "minimo": 0.9777777777777777,
+        "maximo": 1.0
+      },
+      "M3_descarte_indebido": {
+        "media": 0.0012121212121212121,
+        "sd": 0.0027103854272724722,
+        "minimo": 0.0,
+        "maximo": 0.006060606060606061
+      },
+      "M4_latencia_p95_ms": {
+        "media": 15.000699999999998,
+        "sd": 1.0794238219994945,
+        "minimo": 13.27075,
+        "maximo": 16.077049999999996
+      }
+    },
+    "N3_luz_alta": {
+      "M1_exactitud": {
+        "media": 0.986,
+        "sd": 0.006519202405202654,
+        "minimo": 0.98,
+        "maximo": 0.995
+      },
+      "M2_reduccion": {
+        "media": 0.9947368421052631,
+        "sd": 0.011768778828946249,
+        "minimo": 0.9736842105263158,
+        "maximo": 1.0
+      },
+      "M3_descarte_indebido": {
+        "media": 0.0012048192771084338,
+        "sd": 0.002694057804216614,
+        "minimo": 0.0,
+        "maximo": 0.006024096385542169
+      },
+      "M4_latencia_p95_ms": {
+        "media": 14.403739999999999,
+        "sd": 0.7660280203752343,
+        "minimo": 13.681399999999996,
+        "maximo": 15.560399999999998
+      }
+    },
+    "N4_ruido": {
+      "M1_exactitud": {
+        "media": 0.9860000000000001,
+        "sd": 0.008944271909999166,
+        "minimo": 0.97,
+        "maximo": 0.99
+      },
+      "M2_reduccion": {
+        "media": 1.0,
+        "sd": 0.0,
+        "minimo": 1.0,
+        "maximo": 1.0
+      },
+      "M3_descarte_indebido": {
+        "media": 0.0,
+        "sd": 0.0,
+        "minimo": 0.0,
+        "maximo": 0.0
+      },
+      "M4_latencia_p95_ms": {
+        "media": 14.660269999999997,
+        "sd": 1.3406389183892875,
+        "minimo": 12.305799999999998,
+        "maximo": 15.579999999999995
+      }
+    },
+    "N5_posicion": {
+      "M1_exactitud": {
+        "media": 0.9799999999999999,
+        "sd": 0.0035355339059327407,
+        "minimo": 0.975,
+        "maximo": 0.985
+      },
+      "M2_reduccion": {
+        "media": 0.9945945945945945,
+        "sd": 0.012086853932431271,
+        "minimo": 0.972972972972973,
+        "maximo": 1.0
+      },
+      "M3_descarte_indebido": {
+        "media": 0.0038167393361029983,
+        "sd": 0.00348788934296675,
+        "minimo": 0.0,
+        "maximo": 0.006622516556291391
+      },
+      "M4_latencia_p95_ms": {
+        "media": 15.15838,
+        "sd": 1.088480845375792,
+        "minimo": 13.2599,
+        "maximo": 15.951249999999998
+      }
+    },
+    "N6_banda_lenta": {
+      "M1_exactitud": {
+        "media": 0.9860000000000001,
+        "sd": 0.004183300132670382,
+        "minimo": 0.98,
+        "maximo": 0.99
+      },
+      "M2_reduccion": {
+        "media": 1.0,
+        "sd": 0.0,
+        "minimo": 1.0,
+        "maximo": 1.0
+      },
+      "M3_descarte_indebido": {
+        "media": 0.0,
+        "sd": 0.0,
+        "minimo": 0.0,
+        "maximo": 0.0
+      },
+      "M4_latencia_p95_ms": {
+        "media": 13.764999999999997,
+        "sd": 0.6791412942090922,
+        "minimo": 13.011999999999997,
+        "maximo": 14.874849999999999
+      }
+    },
+    "N7_una_variedad": {
+      "M1_exactitud": {
+        "media": 0.994,
+        "sd": 0.004183300132670381,
+        "minimo": 0.99,
+        "maximo": 1.0
+      },
+      "M2_reduccion": {
+        "media": 1.0,
+        "sd": 0.0,
+        "minimo": 1.0,
+        "maximo": 1.0
+      },
+      "M3_descarte_indebido": {
+        "media": 0.0,
+        "sd": 0.0,
+        "minimo": 0.0,
+        "maximo": 0.0
+      },
+      "M4_latencia_p95_ms": {
+        "media": 19.54575999999999,
+        "sd": 7.919211268996422,
+        "minimo": 13.2631,
+        "maximo": 30.496699999999983
+      }
+    },
+    "N8_lote_critico": {
+      "M1_exactitud": {
+        "media": 0.994,
+        "sd": 0.004183300132670382,
+        "minimo": 0.99,
+        "maximo": 1.0
+      },
+      "M2_reduccion": {
+        "media": 1.0,
+        "sd": 0.0,
+        "minimo": 1.0,
+        "maximo": 1.0
+      },
+      "M3_descarte_indebido": {
+        "media": 0.0,
+        "sd": 0.0,
+        "minimo": 0.0,
+        "maximo": 0.0
+      },
+      "M4_latencia_p95_ms": {
+        "media": 14.548309999999997,
+        "sd": 0.9326598585497287,
+        "minimo": 13.491049999999998,
+        "maximo": 15.915899999999999
+      }
+    },
+    "L1_luz_muy_baja": {
+      "M1_exactitud": {
+        "media": 0.982,
+        "sd": 0.006708203932499375,
+        "minimo": 0.975,
+        "maximo": 0.99
+      },
+      "M2_reduccion": {
+        "media": 1.0,
+        "sd": 0.0,
+        "minimo": 1.0,
+        "maximo": 1.0
+      },
+      "M3_descarte_indebido": {
+        "media": 0.001226993865030675,
+        "sd": 0.0027436416901837914,
+        "minimo": 0.0,
+        "maximo": 0.006134969325153374
+      },
+      "M4_latencia_p95_ms": {
+        "media": 13.440529999999999,
+        "sd": 1.0642018708872862,
+        "minimo": 12.456949999999997,
+        "maximo": 15.100099999999998
+      }
+    },
+    "L2_sobreexposicion": {
+      "M1_exactitud": {
+        "media": 0.968,
+        "sd": 0.01036822067666387,
+        "minimo": 0.96,
+        "maximo": 0.985
+      },
+      "M2_reduccion": {
+        "media": 0.9776980428704567,
+        "sd": 0.0219808688009167,
+        "minimo": 0.95,
+        "maximo": 1.0
+      },
+      "M3_descarte_indebido": {
+        "media": 0.009668534457601016,
+        "sd": 0.011285294599162712,
+        "minimo": 0.0,
+        "maximo": 0.029239766081871343
+      },
+      "M4_latencia_p95_ms": {
+        "media": 13.269959999999998,
+        "sd": 1.4073950673140778,
+        "minimo": 11.402249999999999,
+        "maximo": 14.827549999999999
+      }
+    },
+    "L3_desenfoque": {
+      "M1_exactitud": {
+        "media": 0.942,
+        "sd": 0.011510864433221303,
+        "minimo": 0.93,
+        "maximo": 0.96
+      },
+      "M2_reduccion": {
+        "media": 1.0,
+        "sd": 0.0,
+        "minimo": 1.0,
+        "maximo": 1.0
+      },
+      "M3_descarte_indebido": {
+        "media": 0.018301904647967587,
+        "sd": 0.006100601145131786,
+        "minimo": 0.012048192771084338,
+        "maximo": 0.024390243902439025
+      },
+      "M4_latencia_p95_ms": {
+        "media": 14.598729999999994,
+        "sd": 1.0535402012975101,
+        "minimo": 13.63025,
+        "maximo": 16.337249999999997
+      }
+    },
+    "L4_frontera": {
+      "M1_exactitud": {
+        "media": 0.929,
+        "sd": 0.00961769203083565,
+        "minimo": 0.915,
+        "maximo": 0.94
+      },
+      "M2_reduccion": {
+        "media": 0.9597774244833068,
+        "sd": 0.06414604514612116,
+        "minimo": 0.8529411764705882,
+        "maximo": 1.0
+      },
+      "M3_descarte_indebido": {
+        "media": 0.001226993865030675,
+        "sd": 0.0027436416901837914,
+        "minimo": 0.0,
+        "maximo": 0.006134969325153374
+      },
+      "M4_latencia_p95_ms": {
+        "media": 13.760139999999996,
+        "sd": 1.4337931952516705,
+        "minimo": 11.890899999999997,
+        "maximo": 15.52314999999999
+      }
+    },
+    "L5_alta_densidad": {
+      "M1_exactitud": {
+        "media": 0.984,
+        "sd": 0.008215838362577499,
+        "minimo": 0.975,
+        "maximo": 0.995
+      },
+      "M2_reduccion": {
+        "media": 0.910123929426255,
+        "sd": 0.02653566132884922,
+        "minimo": 0.8837209302325582,
+        "maximo": 0.95
+      },
+      "M3_descarte_indebido": {
+        "media": 0.0,
+        "sd": 0.0,
+        "minimo": 0.0,
+        "maximo": 0.0
+      },
+      "M4_latencia_p95_ms": {
+        "media": 13.945009999999993,
+        "sd": 0.21990920399110003,
+        "minimo": 13.733999999999995,
+        "maximo": 14.258099999999995
+      }
+    },
+    "F01_sin_dato": {
+      "M5_tasa": {
+        "media": 1.0,
+        "sd": 0.0,
+        "minimo": 1.0,
+        "maximo": 1.0
+      },
+      "instancias": 15,
+      "manejadas": 15
+    },
+    "F02_imagen_vacia": {
+      "M5_tasa": {
+        "media": 1.0,
+        "sd": 0.0,
+        "minimo": 1.0,
+        "maximo": 1.0
+      },
+      "instancias": 15,
+      "manejadas": 15
+    },
+    "F03_formato": {
+      "M5_tasa": {
+        "media": 1.0,
+        "sd": 0.0,
+        "minimo": 1.0,
+        "maximo": 1.0
+      },
+      "instancias": 15,
+      "manejadas": 15
+    },
+    "F04_nan": {
+      "M5_tasa": {
+        "media": 1.0,
+        "sd": 0.0,
+        "minimo": 1.0,
+        "maximo": 1.0
+      },
+      "instancias": 15,
+      "manejadas": 15
+    },
+    "F05_tipo": {
+      "M5_tasa": {
+        "media": 1.0,
+        "sd": 0.0,
+        "minimo": 1.0,
+        "maximo": 1.0
+      },
+      "instancias": 15,
+      "manejadas": 15
+    },
+    "F06_lente_tapado": {
+      "M5_tasa": {
+        "media": 1.0,
+        "sd": 0.0,
+        "minimo": 1.0,
+        "maximo": 1.0
+      },
+      "instancias": 15,
+      "manejadas": 15
+    },
+    "F07_saturada": {
+      "M5_tasa": {
+        "media": 1.0,
+        "sd": 0.0,
+        "minimo": 1.0,
+        "maximo": 1.0
+      },
+      "instancias": 15,
+      "manejadas": 15
+    },
+    "F08_banda_vacia": {
+      "M5_tasa": {
+        "media": 1.0,
+        "sd": 0.0,
+        "minimo": 1.0,
+        "maximo": 1.0
+      },
+      "instancias": 15,
+      "manejadas": 15
+    },
+    "F09_solapadas": {
+      "M5_tasa": {
+        "media": 0.8666666666666666,
+        "sd": 0.2981423969999719,
+        "minimo": 0.3333333333333333,
+        "maximo": 1.0
+      },
+      "instancias": 15,
+      "manejadas": 13
+    },
+    "F10_rafaga": {
+      "M5_tasa": {
+        "media": 1.0,
+        "sd": 0.0,
+        "minimo": 1.0,
+        "maximo": 1.0
+      },
+      "instancias": 5,
+      "manejadas": 5
+    },
+    "F11_mezcla": {
+      "M5_tasa": {
+        "media": 1.0,
+        "sd": 0.0,
+        "minimo": 1.0,
+        "maximo": 1.0
+      },
+      "instancias": 59,
+      "manejadas": 59
+    }
+  }
+}

@@ -1,0 +1,36 @@
+[    19 s] N1_nominal listo
+[    38 s] N2_luz_baja listo
+[    57 s] N3_luz_alta listo
+[    77 s] N4_ruido listo
+[    96 s] N5_posicion listo
+[   114 s] N6_banda_lenta listo
+[   137 s] N7_una_variedad listo
+[   158 s] N8_lote_critico listo
+[   177 s] L1_luz_muy_baja listo
+[   195 s] L2_sobreexposicion listo
+[   215 s] L3_desenfoque listo
+[   233 s] L4_frontera listo
+[   251 s] L5_alta_densidad listo
+[   257 s] F01_sin_dato listo
+[   262 s] F02_imagen_vacia listo
+[   268 s] F03_formato listo
+[   273 s] F04_nan listo
+[   278 s] F05_tipo listo
+[   283 s] F06_lente_tapado listo
+[   288 s] F07_saturada listo
+[   294 s] F08_banda_vacia listo
+[   299 s] F09_solapadas listo
+[   304 s] F10_rafaga listo
+[   312 s] F11_mezcla listo
+
+=== RESUMEN ===
+M1_exactitud_nominal               media=0.9878  cumple=True
+M1_exactitud_limite                media=0.9610  cumple=True
+M3_descarte_indebido_nominal       media=0.0008  cumple=True
+M3_descarte_indebido_limite        media=0.0061  cumple=True
+M2_reduccion_defectuosas           media=0.9871  cumple=True
+M4_latencia_p95_ms                 media=14.8464  cumple=True
+M4_decisiones_tardias              media=0.0000  cumple=True
+M5_robustez_fallas                 media=0.9899  cumple=False
+M6_consistencia_reporte            media=1.0000  cumple=True
+Tiempo total: 312 s
