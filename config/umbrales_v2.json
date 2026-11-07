@@ -1,0 +1,13 @@
+{
+  "_nota": "Metricas y umbrales declarados en el Hito 1, ANTES de experimentar. Cualquier cambio posterior exige justificacion escrita (ver docs/bitacora_ia.md). Hacer commit de este archivo antes de correr cualquier experimento.",
+  "version": "v2",
+  "particion_semilla": 42,
+  "semillas_modelo": [42, 43, 44],
+  "umbrales": {
+    "macro_f1_prueba_todas_fuentes": {"umbral": 0.90, "sentido": ">=", "conjunto": "prueba, fruitvision + internet"},
+    "exactitud_prueba_fruitvision": {"umbral": 0.95, "sentido": ">=", "conjunto": "prueba, solo fruitvision"},
+    "macro_f1_prueba_internet": {"umbral": 0.70, "sentido": ">=", "conjunto": "prueba, solo internet"},
+    "recall_danada_prueba": {"umbral": 0.95, "sentido": ">=", "conjunto": "prueba, todas las fuentes"},
+    "mejora_macro_f1_sobre_linea_base_puntos": {"umbral": 5.0, "sentido": ">=", "conjunto": "mejor modelo vs linea base, y mayor que la desviacion entre semillas"}
+  }
+}
