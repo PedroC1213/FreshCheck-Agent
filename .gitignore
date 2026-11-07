@@ -2,3 +2,8 @@ __pycache__/
 *.pyc
 .venv/
 .streamlit/
+
+# v2
+data/raw/
+experiments/features/
+.ipynb_checkpoints/
