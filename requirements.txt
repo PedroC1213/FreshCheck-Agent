@@ -1,7 +1,10 @@
-numpy>=2.0
-pandas>=2.2
-scikit-learn>=1.5
-opencv-python-headless>=4.9
-joblib>=1.3
-matplotlib>=3.8
-streamlit>=1.50
+# FreshCheck-Agent v2 (proyecto final) - versiones fijadas
+# numpy/pandas/scikit-learn/matplotlib/pillow: versiones con las que se probo el pipeline (Python 3.12)
+numpy==2.4.4
+pandas==3.0.2
+scikit-learn==1.8.0
+matplotlib==3.10.8
+pillow==12.1.1
+# torch/torchvision: solo para extraer features con ResNet-50 (src/features.py). Par compatible.
+torch==2.12.1
+torchvision==0.27.1
