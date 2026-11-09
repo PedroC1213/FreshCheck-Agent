@@ -34,7 +34,8 @@ Resultado: `data/raw/fruitvision/{fresca,danada}/<fruta>__<id>.jpg`, donde `<fru
 
 ## Limitaciones de los datos
 
-- Según la descripción del dataset, las imágenes (512×512) se tomaron con tres celulares (iPhone 15 Pro Max, Redmi POCO M2 Reloaded y Redmi Note 9 Pro) con luz del día, luz interior y **fondos simples**: no representan una línea de empaque real.
+- Según la descripción del dataset, las imágenes se tomaron con tres celulares (iPhone 15 Pro Max, Redmi POCO M2 Reloaded y Redmi Note 9 Pro) con luz del día, luz interior y **fondos simples**: no representan una línea de empaque real. El README de los autores menciona 512×512, pero las 6 978 imágenes importadas tienen 455 resoluciones distintas (633–4160 px de ancho y 718–4472 px de alto; sobre todo 960×1280 y 1280×960): el modelo las redimensiona.
+- El control de duplicados (dHash, Hamming ≤ 2) produjo 269 grupos con más de una imagen, y 93 de ellos mezclan clases: parte son falsos positivos del hash (fondos lisos). Agrupar de más es conservador, pero el control de duplicados reales es grueso.
 - Recolectado por una sola institución (Daffodil International University, Bangladesh): posible sesgo hacia ese tipo de fruta, iluminación y fondo.
 - Sin identificador del fruto físico: puede haber fotos de la misma fruta en particiones distintas.
 - Los aumentos oficiales (rotación, volteo, zoom, brillo, corte y ruido) se excluyen de la importación; verifique en `--simular` que el filtro los detecta.

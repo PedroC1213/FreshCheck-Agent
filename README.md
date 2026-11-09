@@ -67,7 +67,7 @@ docs/           bitacora_ia.md (bitácora humano-IA), cambios_respecto_hito1.md
   (el script avisa). Los aumentos de datos, cuando se usen (Hito 3), se aplican solo sobre entrenamiento.
 - FruitVision no trae identificador del fruto físico: fotos distintas de la misma fruta pueden caer en particiones
   diferentes y **inflar** los resultados. Se reporta como limitación.
-- Las imágenes se tomaron con tres celulares sobre fondos simples (512×512): los resultados no se extrapolan a una línea de empaque real.
+- Las imágenes se tomaron con tres celulares sobre fondos simples y con resoluciones muy variadas (455 tamaños distintos; la mayoría 960×1280 o 1280×960): los resultados no se extrapolan a una línea de empaque real.
 
 ---
 
