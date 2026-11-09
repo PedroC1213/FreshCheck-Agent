@@ -1,4 +1,3 @@
-[README.md](https://github.com/user-attachments/files/34523488/README.md)
 # FreshCheck-Agent
 
 Clasificación del estado de frutas (**fresca**, **en maduración**, **dañada**) con visión por computador.

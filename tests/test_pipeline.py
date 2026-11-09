@@ -68,6 +68,16 @@ def main():
     # 3) particion y fuga
     construir_datos(raiz, rng)
     make_manifest.main(["--raiz", str(raiz)])
+    # 3b) CSV guardado por Excel en espanol: punto y coma, BOM y acentos en cp1252
+    csv_ = raiz / "data" / "sources_internet.csv"
+    lic = pd.read_csv(csv_, dtype=str)
+    lic.loc[0, "autor"] = "Fot\u00f3grafo \u00d1"
+    csv_.write_bytes(lic.to_csv(index=False, sep=";").encode("cp1252"))
+    make_manifest.main(["--raiz", str(raiz)])
+    csv_.write_bytes(b"\xef\xbb\xbf" + lic.to_csv(index=False, sep=";").encode("utf-8"))
+    make_manifest.main(["--raiz", str(raiz)])
+    construir_datos(raiz, rng)
+    make_manifest.main(["--raiz", str(raiz)])
     split.main(["--raiz", str(raiz)])
     s = pd.read_csv(rutas.particiones).merge(pd.read_csv(rutas.manifiesto), on="id")
     assert (s.groupby("grupo")["particion"].nunique() == 1).all(), "fuga: un grupo en dos particiones"

@@ -8,6 +8,7 @@ Uso:  python -m src.make_manifest
 from __future__ import annotations
 
 import argparse
+import io
 import sys
 from pathlib import Path
 
@@ -53,6 +54,20 @@ def agrupar_duplicados(hashes: np.ndarray, umbral: int) -> np.ndarray:
     return etiquetas
 
 
+def leer_csv(ruta: Path) -> pd.DataFrame:
+    """Lee un CSV tolerando BOM, separador coma/punto y coma/tabulador (Excel en espanol) y UTF-8 o cp1252."""
+    crudo = ruta.read_bytes()
+    try:
+        texto = crudo.decode("utf-8-sig")
+    except UnicodeDecodeError:
+        texto = crudo.decode("cp1252")
+    primera = texto.splitlines()[0] if texto.strip() else ""
+    sep = max((",", ";", "\t"), key=primera.count)
+    df = pd.read_csv(io.StringIO(texto), sep=sep, dtype=str).fillna("")
+    df.columns = [c.strip().lower() for c in df.columns]
+    return df
+
+
 def construir(rutas: Rutas, permitir_sin_licencia: bool = False) -> pd.DataFrame:
     filas, corruptas = [], []
     for fuente in config.FUENTES:
@@ -84,7 +99,10 @@ def construir(rutas: Rutas, permitir_sin_licencia: bool = False) -> pd.DataFrame
     if len(internet):
         if not rutas.fuentes_internet.exists():
             sys.exit(f"Falta {rutas.fuentes_internet} (URL, autor y licencia de cada imagen de internet).")
-        fuentes = pd.read_csv(rutas.fuentes_internet, dtype=str).fillna("")
+        fuentes = leer_csv(rutas.fuentes_internet)
+        if not {"archivo", "licencia"} <= set(fuentes.columns):
+            sys.exit(f"{rutas.fuentes_internet.name} debe tener las columnas 'archivo' y 'licencia'. Encontradas: {list(fuentes.columns)}")
+        fuentes["archivo"] = fuentes["archivo"].str.strip()
         con_licencia = set(fuentes.loc[fuentes["licencia"].str.strip() != "", "archivo"])
         sin = [i for i in internet["id"] if Path(i).name not in con_licencia]
         if sin and not permitir_sin_licencia:
