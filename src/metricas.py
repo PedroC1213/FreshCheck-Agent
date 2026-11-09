@@ -48,15 +48,15 @@ def guardar_matriz_confusion(cm, clases, ruta, titulo="Matriz de confusion"):
     plt.close(fig)
 
 
-def estado_umbrales(m_todas: dict, m_fv: dict | None, m_int: dict | None, umbrales: dict) -> list[dict]:
-    """Compara con los umbrales del Hito 1. En el Hito 2 se evalua en VALIDACION, por lo tanto es indicativo."""
+def estado_umbrales(m_val: dict, macro_f1_fruta_no_vista: float | None, umbrales: dict) -> list[dict]:
+    """Compara con los umbrales declarados. En el Hito 2 se evalua en VALIDACION: es indicativo."""
     def fila(nombre, valor):
         u = umbrales[nombre]
         cumple = None if valor is None else bool(valor >= u["umbral"])
         return {"metrica": nombre, "valor": valor, "umbral": u["umbral"], "cumple": cumple}
     return [
-        fila("macro_f1_prueba_todas_fuentes", m_todas["macro_f1"]),
-        fila("exactitud_prueba_fruitvision", None if m_fv is None else m_fv["exactitud"]),
-        fila("macro_f1_prueba_internet", None if m_int is None else m_int["macro_f1"]),
-        fila("recall_danada_prueba", m_todas["recall_danada"]),
+        fila("macro_f1_prueba", m_val["macro_f1"]),
+        fila("exactitud_prueba", m_val["exactitud"]),
+        fila("macro_f1_fruta_no_vista", macro_f1_fruta_no_vista),
+        fila("recall_danada_prueba", m_val["recall_danada"]),
     ]

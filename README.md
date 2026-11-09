@@ -1,35 +1,37 @@
 # FreshCheck-Agent
 
-Clasificación del estado de frutas (**fresca**, **en maduración**, **dañada**) con visión por computador.
-Este repositorio tiene dos etapas del curso de Inteligencia Artificial (Universidad Tecnológica de Bolívar):
+Clasificación del estado de frutas con visión por computador. Este repositorio tiene dos etapas del curso de
+Inteligencia Artificial (Universidad Tecnológica de Bolívar):
 
-- **v2 — Proyecto final (ruta F, visión por computador):** CNN con transferencia de aprendizaje sobre imágenes reales. Trabajo individual.
+- **v2 — Proyecto final (ruta F, visión por computador):** CNN con transferencia de aprendizaje sobre imágenes reales de FruitVision. Trabajo individual.
 - **v1 — Actividad anterior:** agente sobre un simulador con imágenes sintéticas (sección al final).
 
 ## v2 — Proyecto final
 
-**Pregunta:** ¿cuánto mejora el ajuste fino de una CNN preentrenada la clasificación del estado de una fruta frente a un extractor congelado, y cuánto se degrada al pasar de un dataset público a imágenes de internet?
+**Tarea:** clasificar una fruta como **fresca** o **dañada** (cinco frutas: manzana, banano, mango, naranja y uva).
+**Pregunta:** ¿cuánto mejora el ajuste fino de una CNN preentrenada la clasificación frente a un extractor congelado, y cuánto se degrada ante una fruta que el modelo no vio durante el entrenamiento?
+
+> **Cambios respecto al Hito 1** (alcance de datos, clases y umbrales): ver [`docs/cambios_respecto_hito1.md`](docs/cambios_respecto_hito1.md).
 
 | Elemento | Detalle |
 |---|---|
+| Datos | FruitVision (Mendeley Data, CC BY-NC-ND 4.0): solo imágenes originales, sin aumentos ni formalina |
 | Línea base (Hito 2) | ResNet-50 (ImageNet) congelado + cabeza lineal; piso: clase mayoritaria |
 | Comparación (Hito 3) | ResNet-50 con ajuste fino y EfficientNet-B0 con ajuste fino |
-| Métricas y umbrales | `config/umbrales_v2.json` (declarados en el Hito 1, antes de experimentar) |
+| Métricas y umbrales | `config/umbrales_v2.json` (declarados antes de experimentar) |
 | Evaluación en Hito 2 | Solo **validación**; la partición de prueba no se toca hasta la evaluación final |
+| Generalización | Entrenar con 4 frutas y evaluar en la quinta (fruta no vista) |
 | Semillas | partición 42; modelo 42, 43, 44 |
 
 ### Datos
 
-Detalle, licencias y criterio de etiquetado en [`data/README.md`](data/README.md). Estructura esperada:
+Descargue FruitVision de https://data.mendeley.com/datasets/xkbjx8959c/2 (doi 10.17632/xkbjx8959c.2), descomprímalo y siga
+[`data/README.md`](data/README.md). Las imágenes **no** se suben al repositorio (licencia CC BY-NC-ND: no se redistribuyen);
+sí se suben `data/manifest.csv` y `data/splits.csv`.
 
 ```
-data/raw/
-  fruitvision/{fresca,danada}/        <fruta>__<id>.jpg   (se genera con src.import_fruitvision)
-  internet/{fresca,maduracion,danada}/ <fruta>__<id>.jpg  (se llena a mano; ver data/sources_internet.csv)
+data/raw/fruitvision/{fresca,danada}/   <fruta>__<id>.jpg    (se genera con src.import_fruitvision)
 ```
-
-Las imágenes no se suben al repositorio (`data/raw/` está en `.gitignore`); sí se suben `data/manifest.csv`,
-`data/splits.csv` y `data/sources_internet.csv` (URL, autor y licencia de cada imagen).
 
 ### Instalación y ejecución (4 comandos)
 
@@ -40,31 +42,32 @@ python -m src.import_fruitvision --origen RUTA/FruitVision --excluir-regex "aug"
 python -m src.run_baseline                                   # manifiesto -> partición -> features -> línea base
 ```
 
-Antes del último comando deben estar las imágenes de internet en `data/raw/internet/` y su fila en
-`data/sources_internet.csv`. La primera ejecución descarga los pesos de ResNet-50 (torchvision).
-
-Salidas en `experiments/baseline/`: `resultados_val.json`, `grid_val.csv`, `errores_val.csv`,
-`matriz_confusion_val.png`, `entorno.json` (versiones y hash de la partición).
+La primera ejecución descarga los pesos de ResNet-50 (torchvision). Salidas en `experiments/baseline/`:
+`resultados_val.json`, `grid_val.csv`, `errores_val.csv`, `matriz_confusion_val.png`,
+`generalizacion_fruta_no_vista.csv` y `entorno.json` (versiones y hash de la partición).
 
 Prueba de humo con datos sintéticos (sin descargas ni torch): `python -m tests.test_pipeline`.
 
 ### Estructura v2
 
 ```
-src/            config, make_manifest, split, features, train_baseline, run_baseline, import_fruitvision, metricas
+src/            config, import_fruitvision, make_manifest, split, features, train_baseline, run_baseline, metricas
 tests/          prueba de humo del pipeline (datos sintéticos)
-config/umbrales_v2.json   métricas y umbrales del Hito 1
-data/           README, sources_internet.csv, manifest.csv, splits.csv (raw/ no se versiona)
+config/umbrales_v2.json   métricas y umbrales (con el registro de cambios respecto al Hito 1)
+data/           README, manifest.csv, splits.csv (raw/ no se versiona)
 experiments/    resultados que respaldan cada tabla del informe (features/ no se versiona)
 notebooks/      exploración
-docs/bitacora_ia.md       bitácora humano-IA del proyecto final
+docs/           bitacora_ia.md (bitácora humano-IA), cambios_respecto_hito1.md
 ```
 
-### Control de fuga de datos
+### Control de fuga de datos y limitaciones conocidas
 
-La partición 70/15/15 se hace sobre imágenes originales, estratificada por clase y fuente, y por **grupos de
-duplicados** (dHash, distancia de Hamming ≤ 2): ninguna imagen casi idéntica queda en dos particiones.
-Los aumentos de datos, cuando se usen (Hito 3), se aplican solo sobre entrenamiento.
+- La partición 70/15/15 se hace sobre imágenes originales, estratificada por clase y fruta, y por **grupos de duplicados**
+  (dHash, distancia de Hamming ≤ 2). Un grupo de más de 20 imágenes se considera falso positivo del hash y se deshace
+  (el script avisa). Los aumentos de datos, cuando se usen (Hito 3), se aplican solo sobre entrenamiento.
+- FruitVision no trae identificador del fruto físico: fotos distintas de la misma fruta pueden caer en particiones
+  diferentes y **inflar** los resultados. Se reporta como limitación.
+- Las imágenes se tomaron con tres celulares sobre fondos simples (512×512): los resultados no se extrapolan a una línea de empaque real.
 
 ---
 

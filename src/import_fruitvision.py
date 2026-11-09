@@ -1,7 +1,7 @@
 """Importa FruitVision (carpeta descomprimida) a data/raw/fruitvision/<clase>/<fruta>__<id>.<ext>.
 
 Reglas (Hito 1): fresh -> fresca, rotten -> danada, formalin -> se EXCLUYE (fuera del diseno).
-La clase 'maduracion' no existe en FruitVision. Las imagenes con aumentos se excluyen con --excluir-regex.
+FruitVision no tiene la clase 'en maduracion' (por eso el proyecto usa dos clases). Las imagenes con aumentos se excluyen con --excluir-regex.
 
 IMPORTANTE: la clase se deduce del NOMBRE de las carpetas/archivos. Corra primero con --simular y revise
 el resumen; si muestra muchas imagenes 'sin clase detectada' (p. ej. si el dataset trae etiquetas en

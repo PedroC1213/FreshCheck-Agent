@@ -1,13 +1,20 @@
 {
-  "_nota": "Metricas y umbrales declarados en el Hito 1, ANTES de experimentar. Cualquier cambio posterior exige justificacion escrita (ver docs/bitacora_ia.md). Hacer commit de este archivo antes de correr cualquier experimento.",
-  "version": "v2",
+  "_nota": "Metricas y umbrales declarados ANTES de experimentar (Hito 1, ajustados el 2026-11-08 antes de entrenar cualquier modelo; ver docs/cambios_respecto_hito1.md). Cualquier cambio posterior exige justificacion escrita. Hacer commit de este archivo antes de correr cualquier experimento.",
+  "version": "v2.1",
   "particion_semilla": 42,
   "semillas_modelo": [42, 43, 44],
   "umbrales": {
-    "macro_f1_prueba_todas_fuentes": {"umbral": 0.90, "sentido": ">=", "conjunto": "prueba, fruitvision + internet"},
-    "exactitud_prueba_fruitvision": {"umbral": 0.95, "sentido": ">=", "conjunto": "prueba, solo fruitvision"},
-    "macro_f1_prueba_internet": {"umbral": 0.70, "sentido": ">=", "conjunto": "prueba, solo internet"},
-    "recall_danada_prueba": {"umbral": 0.95, "sentido": ">=", "conjunto": "prueba, todas las fuentes"},
-    "mejora_macro_f1_sobre_linea_base_puntos": {"umbral": 5.0, "sentido": ">=", "conjunto": "mejor modelo vs linea base, y mayor que la desviacion entre semillas"}
-  }
+    "macro_f1_prueba": {"umbral": 0.90, "sentido": ">=", "conjunto": "prueba (FruitVision)"},
+    "exactitud_prueba": {"umbral": 0.95, "sentido": ">=", "conjunto": "prueba (FruitVision)"},
+    "macro_f1_fruta_no_vista": {"umbral": 0.70, "sentido": ">=", "conjunto": "media de las 5 frutas, entrenando sin la fruta evaluada"},
+    "recall_danada_prueba": {"umbral": 0.95, "sentido": ">=", "conjunto": "prueba (FruitVision)"},
+    "reduccion_error_sobre_linea_base": {"umbral": 0.30, "sentido": ">=", "conjunto": "mejor modelo vs linea base: (error_base - error_modelo) / error_base, con error = 1 - macro-F1, y mayor que la desviacion entre semillas"}
+  },
+  "cambios_respecto_hito1": [
+    {"hito1": "macro_f1_prueba_todas_fuentes >= 0.90", "ahora": "macro_f1_prueba >= 0.90", "motivo": "se elimina el conjunto de internet; queda una sola fuente"},
+    {"hito1": "exactitud_prueba_fruitvision >= 0.95", "ahora": "exactitud_prueba >= 0.95", "motivo": "sin cambio de valor; ahora es toda la prueba"},
+    {"hito1": "macro_f1_prueba_internet >= 0.70", "ahora": "macro_f1_fruta_no_vista >= 0.70", "motivo": "reemplaza la degradacion por cambio de dominio (internet) por la generalizacion a una fruta no vista"},
+    {"hito1": "recall_danada_prueba >= 0.95", "ahora": "recall_danada_prueba >= 0.95", "motivo": "sin cambio"},
+    {"hito1": "mejora >= 5 puntos de macro-F1", "ahora": "reduccion_error_sobre_linea_base >= 0.30", "motivo": "con dos clases y un dataset de fondos simples la linea base puede superar 0,95 y 5 puntos serian inalcanzables; la reduccion relativa del error es comparable en cualquier nivel"}
+  ]
 }

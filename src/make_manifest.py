@@ -1,14 +1,13 @@
-"""Construye data/manifest.csv desde data/raw/<fuente>/<clase>/<archivo>.
+"""Construye data/manifest.csv desde data/raw/fruitvision/<clase>/<fruta>__<id>.<ext>.
 
-Pasos: (1) verifica que cada imagen abra, (2) exige fila con licencia para cada imagen de internet,
-(3) calcula un dHash y agrupa duplicados casi identicos (para que nunca queden en particiones distintas).
+Pasos: (1) verifica que cada imagen abra, (2) calcula un dHash y agrupa duplicados casi identicos
+(para que nunca queden en particiones distintas).
 
 Uso:  python -m src.make_manifest
 """
 from __future__ import annotations
 
 import argparse
-import io
 import sys
 from pathlib import Path
 
@@ -33,7 +32,9 @@ def _popcount(x: np.ndarray) -> np.ndarray:
     return np.unpackbits(x.view(np.uint8).reshape(-1, 8), axis=1).sum(axis=1)
 
 
-def agrupar_duplicados(hashes: np.ndarray, umbral: int) -> np.ndarray:
+def agrupar_duplicados(hashes: np.ndarray, umbral: int, max_grupo: int = config.MAX_GRUPO):
+    """Une imagenes con distancia de Hamming <= umbral. Un grupo con mas de max_grupo miembros se considera un
+    falso positivo del hash (fondos lisos, encuadres parecidos) y se deshace. Devuelve (etiquetas, n_deshechos)."""
     n = len(hashes)
     padre = np.arange(n)
 
@@ -51,72 +52,55 @@ def agrupar_duplicados(hashes: np.ndarray, umbral: int) -> np.ndarray:
                 padre[rj] = ri
     raices = np.array([raiz(i) for i in range(n)])
     _, etiquetas = np.unique(raices, return_inverse=True)
-    return etiquetas
+    etiquetas = etiquetas.astype(np.int64)
+    tam = np.bincount(etiquetas)
+    grandes = np.nonzero(tam > max_grupo)[0]
+    siguiente = int(etiquetas.max()) + 1 if n else 0
+    for g in grandes:
+        for i in np.nonzero(etiquetas == g)[0]:
+            etiquetas[i] = siguiente
+            siguiente += 1
+    return etiquetas, int(len(grandes))
 
 
-def leer_csv(ruta: Path) -> pd.DataFrame:
-    """Lee un CSV tolerando BOM, separador coma/punto y coma/tabulador (Excel en espanol) y UTF-8 o cp1252."""
-    crudo = ruta.read_bytes()
-    try:
-        texto = crudo.decode("utf-8-sig")
-    except UnicodeDecodeError:
-        texto = crudo.decode("cp1252")
-    primera = texto.splitlines()[0] if texto.strip() else ""
-    sep = max((",", ";", "\t"), key=primera.count)
-    df = pd.read_csv(io.StringIO(texto), sep=sep, dtype=str).fillna("")
-    df.columns = [c.strip().lower() for c in df.columns]
-    return df
-
-
-def construir(rutas: Rutas, permitir_sin_licencia: bool = False) -> pd.DataFrame:
+def construir(rutas: Rutas) -> pd.DataFrame:
     filas, corruptas = [], []
-    for fuente in config.FUENTES:
-        for clase in config.CLASES:
-            carpeta = rutas.raw / fuente / clase
-            if not carpeta.is_dir():
+    for clase in config.CLASES:
+        carpeta = rutas.fruitvision / clase
+        if not carpeta.is_dir():
+            continue
+        for p in sorted(carpeta.iterdir()):
+            if p.suffix.lower() not in config.EXTENSIONES:
                 continue
-            for p in sorted(carpeta.iterdir()):
-                if p.suffix.lower() not in config.EXTENSIONES:
-                    continue
-                rel = p.relative_to(rutas.raw).as_posix()
-                try:
-                    with Image.open(p) as im:
-                        im.load()
-                        ancho, alto = im.size
-                        h = dhash(im)
-                except Exception as e:  # imagen ilegible
-                    corruptas.append((rel, str(e)))
-                    continue
-                fruta = p.stem.split("__")[0] if "__" in p.stem else "desconocida"
-                filas.append({"id": rel, "fuente": fuente, "clase": clase, "fruta": fruta,
-                              "ancho": ancho, "alto": alto, "dhash": int(h)})
+            rel = p.relative_to(rutas.raw).as_posix()
+            try:
+                with Image.open(p) as im:
+                    im.load()
+                    ancho, alto = im.size
+                    h = dhash(im)
+            except Exception as e:  # imagen ilegible
+                corruptas.append((rel, str(e)))
+                continue
+            fruta = p.stem.split("__")[0] if "__" in p.stem else "desconocida"
+            if fruta not in config.FRUTAS:
+                fruta = "desconocida"
+            filas.append({"id": rel, "clase": clase, "fruta": fruta, "ancho": ancho, "alto": alto, "dhash": int(h)})
     if not filas:
-        sys.exit(f"No se encontraron imagenes en {rutas.raw}. Ver data/README.md para la estructura esperada.")
+        sys.exit(f"No se encontraron imagenes en {rutas.fruitvision}. Ejecute primero src.import_fruitvision (ver data/README.md).")
     df = pd.DataFrame(filas)
 
-    # Licencia obligatoria para internet
-    internet = df[df.fuente == "internet"]
-    if len(internet):
-        if not rutas.fuentes_internet.exists():
-            sys.exit(f"Falta {rutas.fuentes_internet} (URL, autor y licencia de cada imagen de internet).")
-        fuentes = leer_csv(rutas.fuentes_internet)
-        if not {"archivo", "licencia"} <= set(fuentes.columns):
-            sys.exit(f"{rutas.fuentes_internet.name} debe tener las columnas 'archivo' y 'licencia'. Encontradas: {list(fuentes.columns)}")
-        fuentes["archivo"] = fuentes["archivo"].str.strip()
-        con_licencia = set(fuentes.loc[fuentes["licencia"].str.strip() != "", "archivo"])
-        sin = [i for i in internet["id"] if Path(i).name not in con_licencia]
-        if sin and not permitir_sin_licencia:
-            print(f"{len(sin)} imagenes de internet sin fila con licencia en sources_internet.csv, por ejemplo:")
-            for s in sin[:10]:
-                print("  ", s)
-            sys.exit("Complete la licencia de cada imagen (columna 'archivo' = nombre del archivo) o use --permitir-sin-licencia solo para pruebas.")
-
-    hashes = df["dhash"].to_numpy(dtype=np.uint64)
-    df["grupo"] = [f"g{g:06d}" for g in agrupar_duplicados(hashes, config.UMBRAL_HAMMING)]
+    etiquetas, deshechos = agrupar_duplicados(df["dhash"].to_numpy(dtype=np.uint64), config.UMBRAL_HAMMING)
+    df["grupo"] = [f"g{g:06d}" for g in etiquetas]
     df["dhash"] = df["dhash"].map(lambda v: f"{v:016x}")
 
     if corruptas:
         print(f"Aviso: {len(corruptas)} imagenes ilegibles omitidas (ej. {corruptas[0][0]}).")
+    if deshechos:
+        print(f"Aviso: {deshechos} grupos de mas de {config.MAX_GRUPO} imagenes se deshicieron (hash demasiado permisivo "
+              "para estas imagenes); los duplicados dentro de ellos no estan controlados.")
+    desconocidas = int((df["fruta"] == "desconocida").sum())
+    if desconocidas:
+        print(f"Aviso: {desconocidas} imagenes con fruta 'desconocida' (el nombre no empieza con una fruta valida).")
     tam = df.groupby("grupo").size()
     conflicto = df.groupby("grupo")["clase"].nunique()
     print(f"Imagenes: {len(df)} | grupos de duplicados: {(tam > 1).sum()} | grupo mas grande: {tam.max()}")
@@ -129,13 +113,12 @@ def construir(rutas: Rutas, permitir_sin_licencia: bool = False) -> pd.DataFrame
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--raiz", type=Path, default=config.ROOT)
-    ap.add_argument("--permitir-sin-licencia", action="store_true", help="solo para pruebas locales")
     a = ap.parse_args(argv)
     rutas = Rutas(a.raiz)
-    df = construir(rutas, a.permitir_sin_licencia)
+    df = construir(rutas)
     rutas.manifiesto.parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(rutas.manifiesto, index=False)
-    print(df.pivot_table(index=["fuente", "clase"], values="id", aggfunc="count").rename(columns={"id": "n"}).to_string())
+    print(df.pivot_table(index="fruta", columns="clase", values="id", aggfunc="count", fill_value=0).to_string())
     print(f"-> {rutas.manifiesto}")
 
 
