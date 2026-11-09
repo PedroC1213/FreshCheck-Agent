@@ -1,0 +1,27 @@
+{
+  "python": "3.14.7",
+  "numpy": "2.4.4",
+  "pandas": "3.0.2",
+  "scikit_learn": "1.8.0",
+  "semillas": [
+    42,
+    43,
+    44
+  ],
+  "alfas": [
+    1e-05,
+    0.0001,
+    0.001,
+    0.01
+  ],
+  "particion_semilla": 42,
+  "features": {
+    "modelo": "resnet50",
+    "pesos": "IMAGENET1K_V2",
+    "torch": "2.12.1+cpu",
+    "torchvision": "0.27.1+cpu",
+    "dispositivo": "cpu",
+    "n": 6978
+  },
+  "sha256_splits": "51819aff16137b9ea746b9b58dcd08e660a6c707c2de508b38aeb9f2862bafd8"
+}
