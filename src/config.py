@@ -13,7 +13,9 @@ PARTICIONES = ("train", "val", "test")
 FRACCIONES = (0.70, 0.15, 0.15)      # declarado en el Hito 1
 SEED = 42                            # semilla de la particion (Hito 1)
 SEMILLAS = (42, 43, 44)              # 3 semillas por modelo (Hito 1)
-ALFAS = (1e-5, 1e-4, 1e-3, 1e-2)     # cuadricula de regularizacion de la cabeza lineal
+ALFAS = (1e-5, 1e-4, 1e-3, 1e-2)     # cuadricula de regularizacion de la cabeza lineal (Hito 2)
+ALFAS_AMPLIADA = (1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1.0, 10.0)   # Hito 3: el optimo del Hito 2 quedo en el borde
+ARQUITECTURAS = ("resnet50", "efficientnet_b0")
 EXTENSIONES = {".jpg", ".jpeg", ".png", ".webp", ".bmp"}
 UMBRAL_HAMMING = 2                   # distancia maxima entre dHash para tratar dos imagenes como duplicadas
 MAX_GRUPO = 20                       # un grupo mayor se considera falso positivo del hash y se deshace
@@ -46,6 +48,17 @@ class Rutas:
     @property
     def baseline(self) -> Path:
         return self.raiz / "experiments" / "baseline"
+
+    def cache_imgs(self, lado: int = 256) -> Path:
+        return self.raiz / "experiments" / "cache" / f"imgs_{lado}.npy"
+
+    @property
+    def final(self) -> Path:
+        return self.raiz / "experiments" / "final"
+
+    @property
+    def modelos(self) -> Path:
+        return self.raiz / "models_v2"
 
     @property
     def umbrales(self) -> Path:

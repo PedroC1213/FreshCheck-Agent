@@ -7,3 +7,6 @@ __pycache__/
 data/raw/
 experiments/features/
 .ipynb_checkpoints/
+experiments/cache/
+models_v2/resnet50.pt
+experiments/final/figuras/errores_montaje.png

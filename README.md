@@ -48,10 +48,35 @@ La primera ejecución descarga los pesos de ResNet-50 (torchvision). Salidas en 
 
 Prueba de humo con datos sintéticos (sin descargas ni torch): `python -m tests.test_pipeline`.
 
+### Hito 3: ajuste fino, evaluación final y prototipo
+
+Requiere haber ejecutado la línea base (Hito 2). Se recomienda una GPU: use `notebooks/entrenar_colab.ipynb` (Google Colab, gratis).
+
+```bash
+python -m src.run_hito3
+```
+
+Ejecuta en orden: `src.cache` (imágenes a 256×256, una vez), `src.baseline_final` (línea base con α ampliado, prueba y fruta no vista),
+`src.tune` (lr × capas descongeladas, **solo validación**), `src.run_final` (ResNet-50 y EfficientNet-B0, 3 semillas, evaluación
+única en prueba y fruta no vista de la mejor arquitectura) y `src.evaluar_final` (tablas, umbrales, McNemar, bootstrap, figuras).
+Los resultados quedan en `experiments/final/` (`resumen.json` resume todo).
+
+**Análisis de errores (a mano).** `src.evaluar_final` crea `docs/analisis_errores.csv` con los errores de mayor confianza del mejor
+modelo. Complete `categoria_causa` (`etiqueta`, `ambiguo`, `encuadre`, `iluminacion` u `otra`) y `causa_hipotesis` (una frase) mirando
+las fotos; `experiments/final/figuras/errores_montaje.png` las muestra y **no se sube** (contiene imágenes con licencia CC BY-NC-ND).
+
+**Prototipo.** `streamlit run app_v2.py` (web) o `python -m src.predecir foto.jpg` (línea de comandos). Usa el mejor modelo ajustado de
+`models_v2/` y, si no existe, la cabeza de la línea base. Avisa si la confianza es menor a 0,80.
+
+**Informe.** `python docs/informe/build_informe.py` genera `docs/informe/informe.pdf` (artículo de dos columnas) con las cifras de
+`experiments/final/`; requiere LaTeX (`pdflatex`). Prueba del flujo completo con datos sintéticos: `python -m tests.test_final`.
+
 ### Estructura v2
 
 ```
-src/            config, import_fruitvision, make_manifest, split, features, train_baseline, run_baseline, metricas
+src/            Hito 2: config, import_fruitvision, make_manifest, split, features, train_baseline, run_baseline, metricas
+                Hito 3: cache, finetune, tune, baseline_final, run_final, evaluar_final, run_hito3, predecir
+app_v2.py       prototipo web (Streamlit)
 tests/          prueba de humo del pipeline (datos sintéticos)
 config/umbrales_v2.json   métricas y umbrales (con el registro de cambios respecto al Hito 1)
 data/           README, manifest.csv, splits.csv (raw/ no se versiona)

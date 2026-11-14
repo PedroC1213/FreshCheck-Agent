@@ -1,0 +1,184 @@
+\documentclass[10pt,twocolumn,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{mathptmx}
+\usepackage[top=0.75in,bottom=0.8in,left=0.7in,right=0.7in,columnsep=0.25in]{geometry}
+\usepackage{booktabs,graphicx,titlesec,microtype,caption,amsmath,amssymb}
+\DeclareUnicodeCharacter{2265}{\ensuremath{\geq}}
+\DeclareUnicodeCharacter{2264}{\ensuremath{\leq}}
+\DeclareUnicodeCharacter{2192}{\ensuremath{\rightarrow}}
+\sloppy \emergencystretch=2em \hyphenpenalty=10000 \exhyphenpenalty=10000
+\setlength{\parindent}{1em}\setlength{\parskip}{0pt}
+\renewcommand{\thesection}{\Roman{section}}
+\renewcommand{\thesubsection}{\Alph{subsection}}
+\titleformat{\section}{\centering\small\scshape}{\thesection.}{0.5em}{}
+\titleformat{\subsection}[runin]{\itshape\small}{\thesubsection.}{0.4em}{}[.\enspace]
+\titlespacing*{\section}{0pt}{9pt}{4pt}\titlespacing*{\subsection}{0pt}{4pt}{0pt}
+\captionsetup{font=footnotesize,labelsep=period,justification=justified,skip=3pt}
+\renewcommand{\figurename}{Fig.}\renewcommand{\tablename}{Tabla}\renewcommand{\refname}{Referencias}
+\setlength{\textfloatsep}{8pt plus 2pt minus 2pt}\setlength{\floatsep}{6pt}\setlength{\intextsep}{6pt}
+\begin{document}
+\twocolumn[{\centering
+{\Large\bfseries FreshCheck-Agent v2: clasificación del estado de frutas con transferencia de aprendizaje y evaluación en fruta no vista\par}
+\vspace{6pt}{\normalsize Pedro José Castro Blanquicett\par}
+{\small\itshape Ingeniería de Sistemas y Comunicación, Universidad Tecnológica de Bolívar, Cartagena, Colombia\par}
+<<BORRADOR>>
+\vspace{8pt}
+\begin{minipage}{0.94\textwidth}\small\textbf{\textit{Resumen}---}<<RESUMEN>>\par\smallskip
+\textbf{\textit{Palabras clave}---}visión por computador, transferencia de aprendizaje, clasificación de frutas, ResNet-50, EfficientNet, IA responsable.\end{minipage}
+\vspace{10pt}}]
+
+\section{Introducción}
+La inspección de la fruta en líneas de empaque y centros de acopio suele hacerse a simple vista: es lenta, subjetiva y deja pasar unidades dañadas \cite{ism}. El usuario es el personal de control de calidad de empacadores y comercializadores de fruta, también en el Caribe colombiano, que hoy separa a mano la fruta fresca de la dañada. Los autores de FruitVision estiman que cerca de un tercio de la fruta cosechada se pudre, con pérdidas económicas relevantes \cite{fv}. Un clasificador de imágenes puede apoyar esa tarea, pero solo si se mide con honestidad cuánto aporta el aprendizaje y hasta dónde generaliza.
+
+Este trabajo responde dos preguntas: (1) ¿cuánto mejora el ajuste fino de una CNN preentrenada la clasificación del estado de una fruta frente a un extractor de características congelado? y (2) ¿cuánto se degrada el desempeño ante una fruta que el modelo no vio durante el entrenamiento? Las contribuciones son: (i) una partición sin fuga entre imágenes casi duplicadas, (ii) la comparación de una línea base y dos arquitecturas con métricas y umbrales declarados antes de experimentar, (iii) una evaluación por fruta y en fruta no vista, y (iv) un análisis de errores y de riesgos de IA responsable. El alcance es deliberadamente acotado: dos clases (fresca y dañada) y cinco frutas fotografiadas en condiciones controladas.
+
+\section{Trabajo relacionado}
+Las redes residuales \cite{he} y EfficientNet \cite{tan} son arquitecturas de referencia en clasificación de imágenes y están disponibles preentrenadas en ImageNet. La transferencia de aprendizaje reutiliza esas representaciones en tareas con pocos datos \cite{pan}, y la transferibilidad de las capas decrece hacia las últimas \cite{yos}, por lo que conviene decidir cuántas capas ajustar: esto motiva comparar un extractor congelado con el ajuste fino y variar las capas descongeladas. En inspección de fruta, Ismail y Malik \cite{ism} proponen un sistema de clasificación visual en tiempo real con aprendizaje profundo. FruitVision \cite{fv} publica fotos originales y aumentadas de frutas frescas, podridas y con formalina. El libro guía \cite{aima} presenta la visión por computador como percepción para agentes; aquí el agente es un clasificador de un solo paso. Para la evaluación responsable se siguen las tarjetas de modelo \cite{mit}, que piden documentar el uso previsto, las métricas por subgrupo y las limitaciones. La optimización usa AdamW \cite{loc} y la implementación, PyTorch \cite{pt}.
+
+En cuanto a la evaluación, la fuga de datos entre las particiones es una causa conocida de resultados optimistas \cite{kau}; las métricas deben elegirse según el costo de los errores y no solo por exactitud \cite{sok}; la comparación pareada de dos clasificadores sobre la misma prueba se hace con la prueba de McNemar \cite{die} y la incertidumbre con bootstrap \cite{efr}. Los modelos preentrenados parten de ImageNet \cite{rus}, y la documentación del conjunto de datos sigue la idea de las hojas de datos \cite{geb}. A diferencia de los trabajos que reportan solo exactitud sobre una partición aleatoria, aquí se declaran las métricas antes de experimentar, se agrupan los duplicados y se mide la generalización a una fruta no vista.
+
+Los trabajos más cercanos y su relación con este proyecto se resumen en la Tabla~\ref{tab:rel}.
+
+\begin{table*}[t]\centering\footnotesize\caption{Trabajo relacionado y su relación con este proyecto.}\label{tab:rel}
+\begin{tabular}{@{}p{3.1cm}p{6.6cm}p{7.5cm}@{}}\toprule Trabajo & Aporte & Relación con este proyecto \\ \midrule
+He \textit{et al.} \cite{he} & Redes residuales con conexiones de atajo que permiten entrenar redes profundas. & Base de ResNet-50, usada como línea base congelada y como modelo de ajuste fino. \\
+Tan y Le \cite{tan} & Escalado compuesto de profundidad, ancho y resolución (EfficientNet). & Base de EfficientNet-B0, más pequeña y eficiente que ResNet-50. \\
+Yosinski \textit{et al.} \cite{yos} & Estudio de la transferibilidad de las capas de una red profunda. & Motiva comparar congelar frente a ajustar y variar las capas descongeladas. \\
+Pan y Yang \cite{pan} & Panorama y taxonomía del aprendizaje por transferencia. & Marco conceptual de la técnica elegida. \\
+Ismail y Malik \cite{ism} & Inspección visual de frutas con visión por computador y aprendizaje profundo. & Motivación del problema y del usuario; este trabajo añade partición sin fuga y evaluación por fruta. \\
+Bijoy \textit{et al.} \cite{fv} & Conjunto FruitVision de frutas frescas, podridas y con formalina. & Única fuente de datos; se usa un subconjunto y se declaran sus límites. \\
+Mitchell \textit{et al.} \cite{mit} & Tarjetas de modelo: uso previsto, métricas por subgrupo y limitaciones. & Guía de la sección de IA responsable. \\
+\bottomrule\end{tabular}\end{table*}
+
+\section{Formulación del problema}
+\subsection{PEAS y entorno}
+El sistema es un agente de un solo paso que percibe una foto y decide el estado de la fruta; la descripción PEAS se resume en la Tabla~\ref{tab:peas}.
+
+\begin{table}[t]\centering\footnotesize\caption{Descripción PEAS del agente.}\label{tab:peas}
+\setlength{\tabcolsep}{3pt}<<TABLA_PEAS>>\end{table}
+\subsection{Tarea formal}
+Dadas imágenes $x\in\mathbb{R}^{224\times224\times3}$ con etiqueta $y\in\{\text{fresca},\text{dañada}\}$, se aprende $f_\theta$ que minimiza la entropía cruzada ponderada $\mathcal{L}(\theta)=-\sum_c w_c\,\mathbb{1}[y=c]\log p_\theta(c\mid x)$, con $w_c=N/(2N_c)$. Se predice ``dañada'' si $p_\theta(\text{dañada}\mid x)\geq 0{,}5$. El desempeño se mide con macro-F1, exactitud y recall de ``dañada'' en una partición de prueba que no se usa para decidir nada.
+
+\section{Datos}
+Se usa FruitVision \cite{fv} (Mendeley Data; licencia CC BY-NC-ND 4.0, que permite el uso académico no comercial y prohíbe redistribuir obras derivadas, por lo que las imágenes no se publican en el repositorio). Contiene 10\,154 imágenes originales de cinco frutas en tres categorías (fresca, podrida y con formalina), además de versiones aumentadas. Se usan solo las originales frescas y podridas (renombradas ``dañada''), y se excluyen las 3\,176 con formalina, que quedan fuera del diseño. Resultan <<N_TOTAL>> imágenes: <<N_FRESCA>> frescas y <<N_DANADA>> dañadas (Tabla~\ref{tab:datos}). Las fotos se tomaron con tres celulares sobre fondos simples, tienen <<N_RES>> resoluciones distintas (de <<ANCHO_MIN>> a <<ANCHO_MAX>> px de ancho) y no representan una línea de empaque real.
+
+\begin{table}[t]\centering\footnotesize\caption{Imágenes por clase y fruta.}\label{tab:datos}
+\setlength{\tabcolsep}{3pt}<<TABLA_DATOS>>\end{table}
+
+<<TXT_BALANCE>> La Tabla~\ref{tab:ficha} resume la ficha del conjunto, en la línea de las hojas de datos \cite{geb}.
+
+\begin{table*}[t]\centering\footnotesize\caption{Ficha del conjunto de datos (FruitVision, subconjunto usado).}\label{tab:ficha}
+\begin{tabular}{@{}p{2.4cm}p{14.8cm}@{}}\toprule
+Origen & Mendeley Data, V2 \cite{fv}: fotos de cinco frutas tomadas con tres celulares sobre fondos simples por una sola institución (Daffodil International University, Bangladesh). \\
+Licencia & CC BY-NC-ND 4.0: uso académico no comercial; sin redistribuir las imágenes ni versiones modificadas. \\
+Composición & <<N_TOTAL>> imágenes originales (<<N_FRESCA>> frescas y <<N_DANADA>> dañadas) de manzana, banano, mango, naranja y uva, con <<N_RES>> resoluciones distintas. \\
+Procesamiento & Se excluyen las imágenes con formalina y los aumentos; recorte central 224$\times$224; aumentos solo en entrenamiento; partición 70/15/15 por clase, fruta y grupo de duplicados. \\
+Uso previsto & Investigación y docencia sobre clasificación del estado de frutas; no es un sistema de seguridad alimentaria. \\
+Limitaciones & Fondos simples y una sola captura por institución; sin identificador del fruto físico; solo cinco frutas; sin clase de maduración. \\
+\bottomrule\end{tabular}\end{table*}
+
+\begin{table}[t]\centering\footnotesize\caption{Imágenes por partición y clase.}\label{tab:part}
+\setlength{\tabcolsep}{3pt}<<TABLA_PART>>\end{table}
+
+\textbf{Preprocesamiento.} Cada imagen se redimensiona (lado menor de 256 px) y se recorta al centro. En entrenamiento se recortan 224$\times$224 al azar, con volteos y variaciones de brillo y contraste; en evaluación se usa el recorte central. Los aumentos se aplican solo a entrenamiento y se normaliza con la media y la desviación de ImageNet.
+
+\textbf{Partición.} 70/15/15 (entrenamiento <<N_TRAIN>>, validación <<N_VAL>>, prueba <<N_TEST>>), estratificada por clase y fruta, con semilla 42 y sobre imágenes originales. Para evitar fuga se agrupan las imágenes casi idénticas (dHash de 64 bits, distancia de Hamming $\leq 2$) y cada grupo queda en una sola partición. Se detectaron <<N_GRUPOS>> grupos con más de una imagen y <<N_MIX>> de ellos mezclan clases: parte son falsos positivos del hash (agrupa de más, lo que es conservador). Como FruitVision no identifica el fruto físico, fotos distintas de una misma fruta pueden caer en particiones diferentes e inflar los resultados.
+
+\section{Método}
+\subsection{Justificación de la técnica}
+\textit{Transferir en lugar de entrenar desde cero.} Con unas <<N_TRAIN>> imágenes de entrenamiento, una CNN profunda entrenada desde cero tiende a sobreajustar; los pesos preentrenados en ImageNet \cite{rus} aportan filtros generales (bordes, texturas, color) que la transferencia reutiliza \cite{pan,yos}. \textit{Congelado frente a ajuste fino.} El extractor congelado es barato y fija una línea base honesta; el ajuste fino adapta las capas altas a señales propias de la fruta (manchas, moho) a cambio de más cómputo y más riesgo de sobreajuste, y las capas finales son las menos transferibles \cite{yos}. \textit{Arquitecturas.} ResNet-50 \cite{he} es la referencia estándar y EfficientNet-B0 \cite{tan} es un modelo más pequeño y eficiente, de modo que la comparación mezcla precisión y costo. \textit{Alternativas descartadas.} Un detector de objetos (por ejemplo, de la familia YOLO) se justifica cuando hay varias frutas por imagen y hay que localizarlas; aquí cada foto tiene una sola fruta y la clasificación es suficiente. Entrenar desde cero y los clasificadores con características manuales, como el gradient boosting de la versión anterior del proyecto, se descartaron por tener datos insuficientes y poca robustez. \textit{Macro-F1.} La exactitud puede ocultar el desempeño en la clase menos frecuente y no refleja el costo desigual de los errores; el macro-F1 y el recall de ``dañada'' muestran ambos aspectos \cite{sok}. \textit{Partición por grupos.} Las fugas entre entrenamiento y prueba inflan las métricas \cite{kau}. \textit{McNemar y bootstrap.} Comparar dos clasificadores sobre la misma prueba exige un contraste pareado, y McNemar controla bien el error de tipo I con bajo costo \cite{die}; el bootstrap \cite{efr} da intervalos sin suponer normalidad.
+\subsection{Modelos y protocolo}
+\textbf{Línea base.} ResNet-50 preentrenada en ImageNet y congelada: se extraen vectores de 2048 dimensiones y se entrena solo una cabeza lineal (SGD con pérdida logística y pesos de clase balanceados). El parámetro de regularización $\alpha$ se elige en validación en $\{10^{-5},\dots,10\}$, una cuadrícula ampliada porque el óptimo de la primera versión quedó en el extremo. El piso de referencia es el clasificador de clase mayoritaria.
+
+\textbf{Técnica propuesta.} Ajuste fino de ResNet-50 y de EfficientNet-B0 con la cabeza reemplazada por una capa de dos clases: AdamW \cite{loc}, programa coseno, tasa de la cabeza diez veces mayor que la del resto, pérdida ponderada por clase y selección de la mejor época por macro-F1 en validación. Las \textbf{alternativas comparadas} son extractor congelado frente a ajuste fino, y ResNet-50 frente a EfficientNet-B0 (Fig.~\ref{fig:arq}). Se exploraron en validación, con la semilla 42, la tasa de aprendizaje $\{10^{-4},3\cdot10^{-4}\}$ y las capas descongeladas (todas o solo el último bloque), con hasta seis épocas.
+
+\textbf{Protocolo.} Tres semillas (42, 43 y 44) por modelo, una única evaluación en prueba y, para la arquitectura elegida en validación, generalización a fruta no vista: se entrena con cuatro frutas y se evalúa en la quinta. Los umbrales de éxito se declararon antes de experimentar (Tabla~\ref{tab:umb}).
+
+\textbf{Detalles de implementación.} Lotes de 32 imágenes; precisión mixta si hay GPU; semillas fijas para Python, NumPy y PyTorch con cuDNN determinista; las imágenes se preprocesan una sola vez a 256$\times$256 y se guardan en un arreglo para acelerar las corridas; el código usa PyTorch \cite{pt} y scikit-learn. La partición de prueba solo se lee en las corridas finales y, por diseño, cada modelo y semilla se evalúa en ella una vez. Todo está versionado en el repositorio, con la bitácora de uso de IA.
+
+\textbf{Reproducibilidad.} El repositorio ejecuta la línea base con tres comandos (instalación, importación de FruitVision y \texttt{src.run\_baseline}); las corridas finales se ejecutan en una GPU gratuita con el cuaderno \texttt{notebooks/entrenar\_colab.ipynb}. Los resultados que respaldan cada tabla están en \texttt{experiments/}, con las semillas y las versiones de software; la partición se versiona (\texttt{data/splits.csv}) y se verifica por hash.
+
+<<FIG_ARQ>>
+
+\section{Experimentos y resultados}
+\subsection{Configuración}
+Entorno: <<ENTORNO>>. Configuración elegida en validación: <<HP_TXT>> <<H2_TXT>>.
+La Tabla~\ref{tab:tun} resume la búsqueda de hiperparámetros en validación (en negrita, la configuración elegida por arquitectura) y la Fig.~\ref{fig:curvas} las curvas de validación de las corridas finales.
+
+\begin{table}[t]\centering\footnotesize\caption{Búsqueda de hiperparámetros en validación (semilla 42).}\label{tab:tun}
+\setlength{\tabcolsep}{3pt}<<TABLA_TUNING>>\end{table}
+
+<<FIG_CURVAS>>
+
+\subsection{Comparación de modelos}
+La Tabla~\ref{tab:res} y la Fig.~\ref{fig:barras} comparan los modelos en la partición de prueba, con la media y la desviación de tres semillas; la Tabla~\ref{tab:umb} compara el mejor modelo con los umbrales declarados.
+
+\begin{table}[t]\centering\footnotesize\caption{Resultados en prueba (media $\pm$ desviación, 3 semillas).}\label{tab:res}
+\setlength{\tabcolsep}{3pt}<<TABLA_RES>>\end{table}
+
+<<FIG_BARRAS>>
+
+\begin{table}[t]\centering\footnotesize\caption{Precisión, recall y F1 por clase en prueba (media de 3 semillas).}\label{tab:clase}
+\setlength{\tabcolsep}{3pt}<<TABLA_CLASE>>\end{table}
+
+<<DISC>>
+
+\begin{table}[t]\centering\footnotesize\caption{Umbrales declarados y resultado del mejor modelo.}\label{tab:umb}
+\setlength{\tabcolsep}{3pt}<<TABLA_UMB>>\end{table}
+
+\subsection{Subgrupos y fruta no vista}
+La Tabla~\ref{tab:fruta} y la Fig.~\ref{fig:fnv} separan el desempeño por fruta, tanto en prueba como al excluir esa fruta del entrenamiento.
+
+\begin{table}[t]\centering\footnotesize\caption{Macro-F1 por fruta (media de 3 semillas).}\label{tab:fruta}
+\setlength{\tabcolsep}{3pt}<<TABLA_FRUTA>>\end{table}
+
+<<FIG_FNV>>
+
+\subsection{Confianza y revisión humana}
+<<TXT_CAL>>
+
+<<FIG_CAL>>
+
+\subsection{Análisis de errores}
+Se registraron <<NERR_TXT>>. Se clasifican por tipo (FP: fresca clasificada como dañada; FN: dañada clasificada como fresca) y se plantea una hipótesis de causa para <<N_HIP>> de <<N_FILAS_ERR>> casos, los de mayor confianza de cada tipo (Tabla~\ref{tab:err} y Fig.~\ref{fig:cm}); las imágenes de los errores no se reproducen aquí por la licencia del conjunto (CC BY-NC-ND) y se inspeccionan localmente. <<TXT_ERR>> Las causas se clasifican con una taxonomía simple: etiqueta dudosa o errónea, daño ambiguo o leve, encuadre o recorte que deja fuera la zona dañada, iluminación o fondo atípicos, y otra. <<TXT_CAT>>
+
+\begin{table}[t]\centering\footnotesize\caption{Errores seleccionados del mejor modelo en prueba.}\label{tab:err}
+\setlength{\tabcolsep}{3pt}<<TABLA_ERR>>\end{table}
+
+<<FIG_CM>>
+
+\subsection{Amenazas a la validez}
+\textit{Interna.} Los hiperparámetros se eligieron en validación con una sola semilla y la mejor época también, de modo que la prueba no interviene en ninguna decisión; aun así, tres semillas sobre una única partición no capturan la variabilidad debida a la partición. \textit{Externa.} Las imágenes son de cinco frutas, con fondos simples y tomadas con tres celulares: el desempeño no se traslada sin más a otras frutas, cámaras, fondos ni a una línea de empaque, como advierte el resultado en fruta no vista. \textit{De constructo.} El macro-F1 y el recall de ``dañada'' aproximan el costo real de los errores, pero no lo miden: el costo de descartar fruta buena y el de aprobar fruta dañada depende del contexto. \textit{De conclusión.} Con unas 200 imágenes de prueba por fruta y tres semillas, las diferencias pequeñas entre modelos no son concluyentes; por eso se reportan intervalos de confianza y la prueba de McNemar.
+
+\section{IA responsable y limitaciones}
+\textbf{Sesgos y grupos afectados.} Los datos provienen de una sola institución, tres celulares y fondos simples, y solo de cinco frutas: el modelo puede rendir peor con otras frutas, variedades, iluminación o fondos. <<DISP>> Los afectados son productores y comerciantes: un falso positivo descarta fruta buena (desperdicio) y un falso negativo deja pasar fruta dañada al consumidor.
+
+\textbf{Privacidad.} Las imágenes son de frutas y no incluyen personas por diseño; aun así, las fotos de celular pueden traer metadatos (como la ubicación) y, por la licencia, no se redistribuyen. El repositorio publica manifiestos, particiones y resultados, no imágenes.
+
+\textbf{Seguridad y uso indebido.} El modelo no detecta formalina ni contaminantes, y presentarlo como garantía de inocuidad sería un uso indebido; tampoco está permitido un uso comercial (licencia NC). Una confianza alta no implica ausencia de error: parte de los errores tiene confianza alta.
+
+\textbf{Mitigaciones.} La Tabla~\ref{tab:riesgos} relaciona cada riesgo con la evidencia medida y su mitigación. En resumen: (i) el prototipo avisa cuando la confianza es menor a 0,80 y recomienda revisión humana; (ii) se prioriza el recall de ``dañada''; (iii) se reportan métricas por fruta y en fruta no vista; (iv) antes de usarlo en el Caribe habría que recolectar imágenes locales y repetir la evaluación; (v) se documentan uso previsto, datos y límites siguiendo las tarjetas de modelo \cite{mit}.
+
+\begin{table*}[t]\centering\footnotesize\caption{Riesgos de IA responsable, evidencia y mitigaciones.}\label{tab:riesgos}
+<<TABLA_RIESGOS>>\end{table*}
+
+\textbf{Limitaciones.} Solo dos clases (falta ``en maduración'' del diseño original, por no haber datos con licencia); posible fuga por frutos físicos repetidos; control de duplicados grueso (<<N_MIX>> de <<N_GRUPOS>> grupos mezclan clases); una prueba de <<N_TEST>> imágenes (unas 200 por fruta), por lo que las estimaciones por fruta son ruidosas; y tres semillas en lugar de validación cruzada.
+
+\section{Conclusiones y trabajo futuro}
+<<CONCL>>
+
+\textbf{Trabajo futuro.} Reunir imágenes locales con licencia abierta para recuperar la clase ``en maduración'' y probar fondos reales; pasar de clasificación a detección con varias frutas por imagen; calibrar la confianza; y medir el costo en una línea de empaque simulada.
+
+\section{Contribuciones y uso de IA generativa}
+\textbf{Contribuciones.} Proyecto individual: el autor realizó la formulación, la preparación de datos, los experimentos, el análisis y la redacción. \textbf{Uso de IA generativa.} Se usó Claude (Anthropic) para aclarar las pautas, redactar borradores de las propuestas y del informe, generar y depurar el código del repositorio y revisar la licencia y la estructura del dataset. Cada uso, lo aceptado, modificado o descartado y su verificación están en \texttt{docs/bitacora\_ia.md}.
+
+\textbf{Reflexión: casos en que la IA propuso algo inadecuado.} <<REFLEXION>>
+
+\begin{thebibliography}{99}\footnotesize
+<<REFS>>
+\end{thebibliography}
+
+\section*{\centering\small\scshape Anexo: reproducción}\footnotesize
+Repositorio: \texttt{github.com/PedroC1213/FreshCheck-Agent}. Instalación: \texttt{pip install -r requirements.txt}; datos: \texttt{python -m src.import\_fruitvision}; línea base (Hito 2): \texttt{python -m src.run\_baseline}; Hito 3: \texttt{src.cache}, \texttt{src.baseline\_final}, \texttt{src.tune}, \texttt{src.run\_final}, \texttt{src.evaluar\_final}. Semillas: partición 42; modelos 42, 43 y 44. Detalle en el README.
+\end{document}
