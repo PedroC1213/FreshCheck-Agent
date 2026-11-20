@@ -54,18 +54,19 @@ def jl(ruta: Path):
 
 
 def diagrama(salida: Path):
-    fig, ax = plt.subplots(figsize=(3.45, 1.9))
+    fig, ax = plt.subplots(figsize=(3.45, 2.1))
     ax.axis("off")
-    cajas = [(0.02, "Foto\n(RGB)"), (0.23, "Redimensionar\n256 y recorte\n224"), (0.5, "CNN preentrenada\nResNet-50 /\nEfficientNet-B0"), (0.79, "Cabeza\n2 clases")]
-    for x, t in cajas:
-        ax.add_patch(plt.Rectangle((x, 0.45), 0.18 if x < 0.5 else 0.25, 0.42, fc="#eef3fa", ec="k", lw=0.8))
-        ax.text(x + (0.09 if x < 0.5 else 0.125), 0.66, t, ha="center", va="center", fontsize=6)
-    for x0, x1 in ((0.2, 0.23), (0.41, 0.5), (0.75, 0.79)):
-        ax.annotate("", xy=(x1, 0.66), xytext=(x0, 0.66), arrowprops=dict(arrowstyle="->", lw=0.8))
-    ax.text(0.5, 0.25, "Línea base: CNN congelada + cabeza lineal (SGD)\nAjuste fino: AdamW, coseno, aumentos solo en entrenamiento\nSalida: fresca / dañada con probabilidad (umbral 0,5)", ha="center", va="center", fontsize=6)
+    cajas = [(0.01, 0.20, "#14365D", "Foto\nRGB"), (0.25, 0.22, "#2B6CB0", "Redimensionar\n256 y recortar\n224"), (0.52, 0.27, "#2A9D8F", "CNN preentrenada\nResNet-50 /\nEfficientNet-B0"), (0.84, 0.15, "#D9822B", "Cabeza\n2 clases")]
+    for x0, w, c, t in cajas:
+        ax.add_patch(plt.Rectangle((x0, 0.50), w, 0.42, fc=c, ec="none"))
+        ax.text(x0 + w / 2, 0.71, t, ha="center", va="center", fontsize=6, color="white", fontweight="bold")
+    for a0, a1 in ((0.21, 0.25), (0.47, 0.52), (0.79, 0.84)):
+        ax.annotate("", xy=(a1, 0.71), xytext=(a0, 0.71), arrowprops=dict(arrowstyle="->", lw=0.9, color="#8D99AE"))
+    ax.add_patch(plt.Rectangle((0.01, 0.04), 0.98, 0.34, fc="#EEF3FA", ec="none"))
+    ax.text(0.5, 0.21, "Línea base: CNN congelada + cabeza lineal (SGD)\nAjuste fino: AdamW, coseno, aumentos solo en entrenamiento\nSalida: fresca / dañada con probabilidad (umbral 0,5)", ha="center", va="center", fontsize=5.8, color="#2B2D42")
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
-    fig.savefig(salida, dpi=220, bbox_inches="tight")
+    fig.savefig(salida, dpi=240, bbox_inches="tight")
     plt.close(fig)
 
 
