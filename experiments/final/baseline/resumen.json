@@ -1,0 +1,25 @@
+{
+  "alfa": 0.1,
+  "alfas": [
+    1e-05,
+    0.0001,
+    0.001,
+    0.01,
+    0.1,
+    1.0,
+    10.0
+  ],
+  "semillas": [
+    42,
+    43,
+    44
+  ],
+  "features": {
+    "modelo": "resnet50",
+    "pesos": "IMAGENET1K_V2",
+    "torch": "2.12.1+cpu",
+    "torchvision": "0.27.1+cpu",
+    "dispositivo": "cpu",
+    "n": 6978
+  }
+}
