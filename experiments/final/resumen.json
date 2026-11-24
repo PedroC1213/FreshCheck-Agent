@@ -1,0 +1,421 @@
+{
+  "modelos": {
+    "baseline": {
+      "semillas": [
+        42,
+        43,
+        44
+      ],
+      "test": {
+        "macro_f1": [
+          0.969964833033399,
+          0.9671573194900465,
+          0.9652631578947368
+        ],
+        "exactitud": [
+          0.970334928229665,
+          0.9674641148325359,
+          0.9655502392344497
+        ],
+        "recall_danada": [
+          0.9532908704883227,
+          0.9660297239915074,
+          0.970276008492569
+        ]
+      },
+      "test_media": {
+        "macro_f1": 0.9674617701393942,
+        "exactitud": 0.9677830940988835,
+        "recall_danada": 0.9631988676574664
+      },
+      "test_desv": {
+        "macro_f1": 0.0023655770809243542,
+        "exactitud": 0.002408240649209179,
+        "recall_danada": 0.008839346069919882
+      },
+      "precision_danada": 0.9654551193004984,
+      "por_clase": {
+        "fresca": {
+          "precision": 0.9699380948049088,
+          "recall": 0.9715447154471545,
+          "f1": 0.9706838403466129
+        },
+        "danada": {
+          "precision": 0.9654551193004984,
+          "recall": 0.9631988676574664,
+          "f1": 0.9642396999321753
+        }
+      },
+      "val_macro_f1_media": 0.9661496752284942,
+      "matriz_confusion_primera_semilla": [
+        [
+          565,
+          9
+        ],
+        [
+          22,
+          449
+        ]
+      ],
+      "por_fruta": {
+        "banano": {
+          "n": 207,
+          "macro_f1": 0.9870190857958301,
+          "exactitud": 0.9871175523349436,
+          "recall_danada": 0.9722222222222222
+        },
+        "mango": {
+          "n": 202,
+          "macro_f1": 0.9864309647250922,
+          "exactitud": 0.9867986798679867,
+          "recall_danada": 0.9880952380952381
+        },
+        "manzana": {
+          "n": 212,
+          "macro_f1": 0.9287089661833768,
+          "exactitud": 0.9292452830188679,
+          "recall_danada": 0.9403508771929824
+        },
+        "naranja": {
+          "n": 215,
+          "macro_f1": 0.9813885030395934,
+          "exactitud": 0.9813953488372092,
+          "recall_danada": 0.9757575757575757
+        },
+        "uva": {
+          "n": 209,
+          "macro_f1": 0.9538050587095742,
+          "exactitud": 0.9553429027113237,
+          "recall_danada": 0.937984496124031
+        }
+      },
+      "fruta_no_vista": {
+        "por_fruta": {
+          "banano": {
+            "exactitud": 0.8461101646791596,
+            "macro_f1": 0.8460349494308904,
+            "recall_danada": 0.9272388059701493
+          },
+          "mango": {
+            "exactitud": 0.8692975090959978,
+            "macro_f1": 0.8688477541118402,
+            "recall_danada": 0.9725274725274726
+          },
+          "manzana": {
+            "exactitud": 0.6539870386024232,
+            "macro_f1": 0.6344885385512199,
+            "recall_danada": 0.9719626168224299
+          },
+          "naranja": {
+            "exactitud": 0.8001116694584032,
+            "macro_f1": 0.7821695806197558,
+            "recall_danada": 0.5665445665445666
+          },
+          "uva": {
+            "exactitud": 0.8021270640917996,
+            "macro_f1": 0.7859809917114937,
+            "recall_danada": 0.5845588235294118
+          }
+        },
+        "macro_f1_media": 0.78350436288504,
+        "exactitud_media": 0.7943266891855567
+      }
+    },
+    "efficientnet_b0": {
+      "semillas": [
+        42,
+        43,
+        44
+      ],
+      "test": {
+        "macro_f1": [
+          0.9970993413145397,
+          0.9903330249768734,
+          0.9971004680871136
+        ],
+        "exactitud": [
+          0.9971291866028709,
+          0.9904306220095693,
+          0.9971291866028709
+        ],
+        "recall_danada": [
+          0.9936305732484076,
+          0.9872611464968153,
+          0.9957537154989384
+        ]
+      },
+      "test_media": {
+        "macro_f1": 0.9948442781261756,
+        "exactitud": 0.9948963317384371,
+        "recall_danada": 0.9922151450813871
+      },
+      "test_desv": {
+        "macro_f1": 0.003906859870819636,
+        "exactitud": 0.0038674180711267383,
+        "recall_danada": 0.004419673034959941
+      },
+      "precision_danada": 0.9964478519257814,
+      "por_clase": {
+        "fresca": {
+          "precision": 0.9936352552348898,
+          "recall": 0.997096399535424,
+          "f1": 0.9953623175255463
+        },
+        "danada": {
+          "precision": 0.9964478519257814,
+          "recall": 0.9922151450813871,
+          "f1": 0.9943262387268047
+        }
+      },
+      "val_macro_f1_media": 0.9967829880153173,
+      "matriz_confusion_primera_semilla": [
+        [
+          574,
+          0
+        ],
+        [
+          3,
+          468
+        ]
+      ],
+      "por_fruta": {
+        "banano": {
+          "n": 207,
+          "macro_f1": 1.0,
+          "exactitud": 1.0,
+          "recall_danada": 1.0
+        },
+        "mango": {
+          "n": 202,
+          "macro_f1": 1.0,
+          "exactitud": 1.0,
+          "recall_danada": 1.0
+        },
+        "manzana": {
+          "n": 212,
+          "macro_f1": 0.988862621486735,
+          "exactitud": 0.9889937106918238,
+          "recall_danada": 0.9824561403508771
+        },
+        "naranja": {
+          "n": 215,
+          "macro_f1": 1.0,
+          "exactitud": 1.0,
+          "recall_danada": 1.0
+        },
+        "uva": {
+          "n": 209,
+          "macro_f1": 0.9851550181082382,
+          "exactitud": 0.985645933014354,
+          "recall_danada": 0.9767441860465116
+        }
+      },
+      "fruta_no_vista": {
+        "por_fruta": {
+          "banano": {
+            "exactitud": 0.7819420783645655,
+            "macro_f1": 0.780950932211579,
+            "recall_danada": 0.9278606965174129
+          },
+          "mango": {
+            "exactitud": 0.9297509095997761,
+            "macro_f1": 0.9279864391687324,
+            "recall_danada": 0.8528693528693528
+          },
+          "manzana": {
+            "exactitud": 0.7241476472245703,
+            "macro_f1": 0.718261205278091,
+            "recall_danada": 0.9588785046728971
+          },
+          "naranja": {
+            "exactitud": 0.8989391401451704,
+            "macro_f1": 0.8988118668591053,
+            "recall_danada": 0.9645909645909646
+          },
+          "uva": {
+            "exactitud": 0.7178841309823678,
+            "macro_f1": 0.6721661093385238,
+            "recall_danada": 0.3866421568627451
+          }
+        },
+        "macro_f1_media": 0.7996353105712063,
+        "exactitud_media": 0.8105327812632901
+      },
+      "segundos_s42": 72.5,
+      "mejor_epoca_s42": 2,
+      "config": {
+        "arq": "efficientnet_b0",
+        "semilla": 42,
+        "lr": 0.0003,
+        "epocas": 4,
+        "descongelar": "todo",
+        "lote": 32,
+        "tam": 224,
+        "lado": 256,
+        "modo": "estandar",
+        "fruta": null,
+        "sin_pesos": false,
+        "evaluar_test": true
+      }
+    }
+  },
+  "mejor_modelo": "efficientnet_b0",
+  "comparacion": {
+    "error_base": 0.03253822986060584,
+    "error_modelo": 0.005155721873824404,
+    "delta_macro_f1": 0.027382507986781435,
+    "reduccion_error": 0.8415487905792178,
+    "desv_max": 0.003906859870819636,
+    "mayor_que_desv": true
+  },
+  "mcnemar": {
+    "semilla": 42,
+    "base_acierta_modelo_falla": 1,
+    "base_falla_modelo_acierta": 29,
+    "p_valor": 5.774199962615967e-08
+  },
+  "bootstrap": {
+    "semilla": 42,
+    "B": 1000,
+    "base": [
+      0.9591851667944505,
+      0.9798084540424956
+    ],
+    "mejor": [
+      0.9932206845278982,
+      1.0
+    ],
+    "delta": [
+      0.01734152520475921,
+      0.03806694318485473
+    ]
+  },
+  "umbrales": [
+    {
+      "metrica": "macro_f1_prueba",
+      "valor": 0.9948442781261756,
+      "umbral": 0.9,
+      "cumple": true
+    },
+    {
+      "metrica": "exactitud_prueba",
+      "valor": 0.9948963317384371,
+      "umbral": 0.95,
+      "cumple": true
+    },
+    {
+      "metrica": "macro_f1_fruta_no_vista",
+      "valor": 0.7996353105712063,
+      "umbral": 0.7,
+      "cumple": true
+    },
+    {
+      "metrica": "recall_danada_prueba",
+      "valor": 0.9922151450813871,
+      "umbral": 0.95,
+      "cumple": true
+    },
+    {
+      "metrica": "reduccion_error_sobre_linea_base",
+      "valor": 0.8415487905792178,
+      "umbral": 0.3,
+      "cumple": true
+    }
+  ],
+  "calibracion": {
+    "baseline": {
+      "ece": 0.05102357815740593,
+      "intervalos": [
+        {
+          "lo": 0.5,
+          "n": 27,
+          "confianza": 0.5515588251206319,
+          "exactitud": 0.6296296296296297
+        },
+        {
+          "lo": 0.6,
+          "n": 45,
+          "confianza": 0.6516774052332427,
+          "exactitud": 0.7333333333333333
+        },
+        {
+          "lo": 0.7,
+          "n": 55,
+          "confianza": 0.7557620162949387,
+          "exactitud": 0.9272727272727272
+        },
+        {
+          "lo": 0.8,
+          "n": 156,
+          "confianza": 0.8597410629189154,
+          "exactitud": 0.9871794871794872
+        },
+        {
+          "lo": 0.9,
+          "n": 762,
+          "confianza": 0.972147339370322,
+          "exactitud": 0.9960629921259843
+        }
+      ],
+      "umbral_revision": 0.8,
+      "fraccion_revision": 0.1215311004784689,
+      "exactitud_automatica": 0.9945533769063181,
+      "errores_capturados": 0.8387096774193549
+    },
+    "mejor": {
+      "ece": 0.005409149065134115,
+      "intervalos": [
+        {
+          "lo": 0.5,
+          "n": 4,
+          "confianza": 0.53778105,
+          "exactitud": 1.0
+        },
+        {
+          "lo": 0.6,
+          "n": 6,
+          "confianza": 0.67669802,
+          "exactitud": 0.6666666666666666
+        },
+        {
+          "lo": 0.7,
+          "n": 3,
+          "confianza": 0.7593254366666667,
+          "exactitud": 1.0
+        },
+        {
+          "lo": 0.8,
+          "n": 14,
+          "confianza": 0.8677553871428572,
+          "exactitud": 1.0
+        },
+        {
+          "lo": 0.9,
+          "n": 1018,
+          "confianza": 0.9978683216276374,
+          "exactitud": 0.9990176817288802
+        }
+      ],
+      "umbral_revision": 0.8,
+      "fraccion_revision": 0.012440191387559809,
+      "exactitud_automatica": 0.999031007751938,
+      "errores_capturados": 0.6666666666666666
+    },
+    "semilla": 42
+  },
+  "errores": {
+    "n_errores_test": 3,
+    "por_tipo": {
+      "falso negativo (danada -> fresca)": 3
+    },
+    "confianza_media_por_tipo": {
+      "falso negativo (danada -> fresca)": 0.76051504
+    },
+    "n_confianza_alta": 1,
+    "por_fruta": {
+      "uva": 2,
+      "manzana": 1
+    },
+    "plantilla": "/content/FreshCheck-Agent/docs/analisis_errores.csv"
+  }
+}

@@ -1,0 +1,4 @@
+id,fruta,y_real,y_pred,confianza,tipo_error,categoria_causa,causa_hipotesis
+fruitvision/danada/uva__5f7e0b95_msg5170347760-64917.jpg,uva,danada,fresca,0.904,falso negativo (danada -> fresca),,
+fruitvision/danada/uva__7fac4e36_msg5170347760-66291.jpg,uva,danada,fresca,0.695,falso negativo (danada -> fresca),,
+fruitvision/danada/manzana__cf48ac1c_msg5170347760-65035.jpg,manzana,danada,fresca,0.682,falso negativo (danada -> fresca),,

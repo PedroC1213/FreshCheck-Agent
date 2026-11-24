@@ -17,9 +17,9 @@
   "features": {
     "modelo": "resnet50",
     "pesos": "IMAGENET1K_V2",
-    "torch": "2.12.1+cpu",
-    "torchvision": "0.27.1+cpu",
-    "dispositivo": "cpu",
+    "torch": "2.14.1+cu130",
+    "torchvision": "0.29.1+cu130",
+    "dispositivo": "cuda",
     "n": 6978
   }
 }

@@ -1,0 +1,20 @@
+{
+  "val": {
+    "efficientnet_b0": {
+      "macro_f1_val_media": 0.9967829880153173,
+      "mejor_epoca_mediana": 3
+    }
+  },
+  "mejor_arquitectura": "efficientnet_b0",
+  "dispositivo": "cuda",
+  "entorno": {
+    "python": "3.13.16",
+    "torch": "2.14.1+cu130",
+    "torchvision": "0.29.1+cu130",
+    "numpy": "2.4.6",
+    "pandas": "2.2.3",
+    "scikit_learn": "1.6.1",
+    "dispositivo": "cuda",
+    "gpu": "Tesla T4"
+  }
+}

@@ -1,0 +1,4 @@
+id,fruta,y_real,y_pred,p_danada,confianza,tipo_error
+fruitvision/danada/uva__5f7e0b95_msg5170347760-64917.jpg,uva,danada,fresca,0.09562383,0.90437617,falso negativo (danada -> fresca)
+fruitvision/danada/uva__7fac4e36_msg5170347760-66291.jpg,uva,danada,fresca,0.30503497,0.69496503,falso negativo (danada -> fresca)
+fruitvision/danada/manzana__cf48ac1c_msg5170347760-65035.jpg,manzana,danada,fresca,0.31779608,0.6822039200000001,falso negativo (danada -> fresca)

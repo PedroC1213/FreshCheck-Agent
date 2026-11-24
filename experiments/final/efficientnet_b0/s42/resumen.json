@@ -1,0 +1,118 @@
+{
+  "config": {
+    "arq": "efficientnet_b0",
+    "semilla": 42,
+    "lr": 0.0003,
+    "epocas": 4,
+    "descongelar": "todo",
+    "lote": 32,
+    "tam": 224,
+    "lado": 256,
+    "modo": "estandar",
+    "fruta": null,
+    "sin_pesos": false,
+    "evaluar_test": true
+  },
+  "historial": [
+    {
+      "epoca": 1,
+      "loss_train": 0.15185602066491252,
+      "macro_f1_val": 0.9932420419424524,
+      "exactitud_val": 0.9933206106870229,
+      "seg": 20.9
+    },
+    {
+      "epoca": 2,
+      "loss_train": 0.0569576630793977,
+      "macro_f1_val": 0.9971049270568693,
+      "exactitud_val": 0.9971374045801527,
+      "seg": 37.6
+    },
+    {
+      "epoca": 3,
+      "loss_train": 0.0475603461959528,
+      "macro_f1_val": 0.9951748784281154,
+      "exactitud_val": 0.9952290076335878,
+      "seg": 54.3
+    },
+    {
+      "epoca": 4,
+      "loss_train": 0.02079740932998662,
+      "macro_f1_val": 0.997103732261051,
+      "exactitud_val": 0.9971374045801527,
+      "seg": 71.0
+    }
+  ],
+  "mejor_epoca": 2,
+  "segundos": 72.5,
+  "n_train": 4885,
+  "n_eval": 1048,
+  "val": {
+    "n": 1048,
+    "exactitud": 0.9971374045801527,
+    "macro_f1": 0.9971049270568693,
+    "clases_presentes": [
+      "fresca",
+      "danada"
+    ],
+    "recall_danada": 0.9978632478632479,
+    "por_clase": {
+      "fresca": {
+        "precision": 0.998272884283247,
+        "recall": 0.996551724137931,
+        "f1": 0.997411561691113,
+        "soporte": 580
+      },
+      "danada": {
+        "precision": 0.9957356076759062,
+        "recall": 0.9978632478632479,
+        "f1": 0.9967982924226254,
+        "soporte": 468
+      }
+    },
+    "matriz_confusion": [
+      [
+        578,
+        2
+      ],
+      [
+        1,
+        467
+      ]
+    ]
+  },
+  "test": {
+    "n": 1045,
+    "exactitud": 0.9971291866028709,
+    "macro_f1": 0.9970993413145397,
+    "clases_presentes": [
+      "fresca",
+      "danada"
+    ],
+    "recall_danada": 0.9936305732484076,
+    "por_clase": {
+      "fresca": {
+        "precision": 0.9948006932409013,
+        "recall": 1.0,
+        "f1": 0.9973935708079931,
+        "soporte": 574
+      },
+      "danada": {
+        "precision": 1.0,
+        "recall": 0.9936305732484076,
+        "f1": 0.9968051118210862,
+        "soporte": 471
+      }
+    },
+    "matriz_confusion": [
+      [
+        574,
+        0
+      ],
+      [
+        3,
+        468
+      ]
+    ]
+  }
+}

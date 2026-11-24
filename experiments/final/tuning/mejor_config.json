@@ -1,0 +1,9 @@
+{
+  "efficientnet_b0": {
+    "lr": 0.0003,
+    "descongelar": "todo",
+    "epocas": 4,
+    "mejor_epoca": 2,
+    "macro_f1_val": 0.9971049270568693
+  }
+}
